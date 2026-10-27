@@ -1,0 +1,1575 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="referrer" content="no-referrer">
+<meta name="app-build" content="1025-0739-d675c6">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>PhD Planner</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@600;700&display=swap">
+<style>
+/* Look: white paper, slate ink, serif titles (Georgia / Noto Serif SC), warm gold accent,
+   thin-bordered rounded cards, pill navigation and a frosted sticky tab bar. Layout: sticky masthead with sync chip + tab rail;
+   the week sheet pulls to-dos from every area; each area sheet is trackers (status, to-do/DDL, progress log) then reference notes. */
+:root{
+  --bg:#FBFBFD; --surface:#FFFFFF; --sunk:#F3F5F8; --ink:#1E293B; --muted:#64748B; --line:#E2E8F0; --hair:#EEF1F5; --grid:transparent;
+  --c-research:#3A6EA5; --c-exp:#3D7F63; --c-dim:#B0506E; --c-admin:#7556A8; --c-think:#8E6A2E;
+  --accent:#8E6A2E; --accent-hi:#D4A562; --accent-soft:#FAF4EA; --on-accent:#FFFFFF; --btn:#1E293B; --on-btn:#FFFFFF;
+  --p0:#C62E3A; --p0-bg:#FDEEEF; --p1:#A15C07; --p1-bg:#FBF3E4; --p2:#2F7D57; --p2-bg:#E9F6EF; --p3:#64748B; --p3-bg:#F1F5F9;
+  --ok:#2F7D57; --warn:#A15C07; --bad:#C62E3A; --shadow:rgba(15,23,42,.12); --card-shadow:0 1px 2px rgba(15,23,42,.04),0 1px 3px rgba(15,23,42,.03);
+  --glass:rgba(251,251,253,.78);
+  --f-display:Georgia,"Noto Serif SC","Songti SC","Source Han Serif SC",STSong,serif;
+  --f-body:-apple-system,BlinkMacSystemFont,"SF Pro Text",Inter,"PingFang SC","Hiragino Sans GB","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;
+  --f-mono:-apple-system,BlinkMacSystemFont,"SF Pro Text",Inter,"PingFang SC","Hiragino Sans GB","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;
+  --f-code:ui-monospace,SFMono-Regular,Menlo,Consolas,"PingFang SC","Noto Sans SC",monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0F172A; --surface:#1A2335; --sunk:#243049; --ink:#F1F5F9; --muted:#94A3B8; --line:#2C3850; --hair:#243047; --grid:transparent;
+  --c-research:#8AB4E8; --c-exp:#7CCBA6; --c-dim:#EE9BB5; --c-admin:#BBA3E8; --c-think:#E4B976;
+  --accent:#E4B976; --accent-hi:#E4B976; --accent-soft:rgba(228,185,118,.13); --on-accent:#0F172A; --btn:#F1F5F9; --on-btn:#0F172A;
+  --p0:#F2848B; --p0-bg:rgba(242,132,139,.14); --p1:#E9B872; --p1-bg:rgba(228,185,118,.14); --p2:#74D0A1; --p2-bg:rgba(116,208,161,.13); --p3:#A3AEBD; --p3-bg:rgba(148,163,184,.14);
+  --ok:#74D0A1; --warn:#E9B872; --bad:#F2848B; --shadow:rgba(0,0,0,.5); --card-shadow:none; --glass:rgba(15,23,42,.78); color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#0F172A; --surface:#1A2335; --sunk:#243049; --ink:#F1F5F9; --muted:#94A3B8; --line:#2C3850; --hair:#243047; --grid:transparent;
+  --c-research:#8AB4E8; --c-exp:#7CCBA6; --c-dim:#EE9BB5; --c-admin:#BBA3E8; --c-think:#E4B976;
+  --accent:#E4B976; --accent-hi:#E4B976; --accent-soft:rgba(228,185,118,.13); --on-accent:#0F172A; --btn:#F1F5F9; --on-btn:#0F172A;
+  --p0:#F2848B; --p0-bg:rgba(242,132,139,.14); --p1:#E9B872; --p1-bg:rgba(228,185,118,.14); --p2:#74D0A1; --p2-bg:rgba(116,208,161,.13); --p3:#A3AEBD; --p3-bg:rgba(148,163,184,.14);
+  --ok:#74D0A1; --warn:#E9B872; --bad:#F2848B; --shadow:rgba(0,0,0,.5); --card-shadow:none; --glass:rgba(15,23,42,.78); color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-padding-top:64px}
+body{background:var(--bg);color:var(--ink);font:15px/1.65 var(--f-body);-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-underline-offset:2px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+button{font-family:inherit}
+.wrap{max-width:1160px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* masthead */
+.mast{background:var(--bg)}
+.tabbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:var(--bg);border-bottom:1px solid var(--line)}
+.mast-row{display:flex;align-items:center;gap:10px 14px;padding-block:10px 4px;flex-wrap:wrap}
+.brand{font:600 20px/1.1 var(--f-display);letter-spacing:.005em;margin:0}
+.brand small{display:block;font:400 11.5px/1.4 var(--f-mono);color:var(--muted);margin-top:3px}
+.mast-tools{display:flex;gap:8px;align-items:center;margin-left:auto;flex:1 1 300px;justify-content:flex-end;min-width:0}
+.search{position:relative;flex:1 1 200px;max-width:360px;min-width:0}
+.search input{width:100%;font:14px var(--f-body);color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:7px 34px 7px 11px}
+.search input:not(:placeholder-shown)+kbd{display:none}
+.search kbd{position:absolute;right:8px;top:50%;transform:translateY(-50%);font:11px var(--f-mono);color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:0 5px;pointer-events:none}
+.results{position:absolute;right:0;top:calc(100% + 6px);width:min(560px,calc(100vw - 32px));max-height:60vh;overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:10px;box-shadow:0 12px 32px var(--shadow);padding:6px;z-index:40}
+.results button{display:block;width:100%;text-align:left;border:0;background:none;color:var(--ink);font:13.5px/1.5 var(--f-body);padding:8px 10px;border-radius:6px;cursor:pointer}
+.results button:hover,.results button:focus-visible{background:var(--sunk)}
+.results .rt{font:500 10.5px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);display:block}
+.results mark{background:var(--p1-bg);color:var(--ink);border-radius:2px}
+.results .empty{padding:10px;color:var(--muted);font-size:13px}
+.iconbtn{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:8px;font:500 12px var(--f-mono);padding:7px 10px;cursor:pointer;white-space:nowrap}
+.sync{border:1px solid var(--line);background:var(--surface);color:var(--muted);border-radius:999px;font:500 11.5px var(--f-mono);padding:6px 10px;cursor:pointer;white-space:nowrap}
+.sync[data-s="ok"]{color:var(--ok)} .sync[data-s="dirty"],.sync[data-s="saving"]{color:var(--warn)}
+.sync[data-s="error"],.sync[data-s="auth"],.sync[data-s="offline"]{color:var(--bad);border-color:var(--bad)}
+.tabs{display:flex;gap:0;overflow-x:auto;scrollbar-width:none;margin-bottom:-1px}
+.tabs::-webkit-scrollbar{display:none}
+.tab{appearance:none;border:0;background:none;padding:8px 11px 9px;font:500 14.5px var(--f-body);color:var(--muted);border-bottom:2px solid transparent;white-space:nowrap;cursor:pointer}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+.tab:hover{color:var(--ink)}
+.tab .n{font:500 10.5px var(--f-mono);margin-left:4px;padding:1px 5px;border-radius:99px;background:var(--p0-bg);color:var(--p0)}
+
+/* sheet */
+main{padding-block:24px 72px}
+.panel{display:grid;gap:30px}
+.sec{display:grid;gap:12px;min-width:0;align-content:start}
+.sec-h{display:flex;align-items:baseline;gap:6px 12px;flex-wrap:wrap}
+.sec-h h2{font:600 19px/1.25 var(--f-display);margin:0;text-wrap:balance}
+.sec-h .aside{margin-left:auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+h3{font:600 16px/1.3 var(--f-display);margin:0;text-wrap:balance}
+.eyebrow{font:500 11px/1.3 var(--f-mono);letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.lede{color:var(--muted);margin:0;max-width:72ch}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;min-width:0;display:grid;gap:10px;align-content:start}
+.box-h{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.box-h h3{flex:1;min-width:0}
+.grid2{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));align-items:start}
+.cols{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));align-items:start}
+.stack{display:grid;gap:20px;align-content:start;min-width:0}
+ul.list{margin:0;padding-left:1.15em;display:grid;gap:5px}
+ul.list li{min-width:0;overflow-wrap:anywhere}
+ul.list li::marker{color:var(--muted)}
+ul.list ul.list{margin-top:4px;color:var(--muted);font-size:14px}
+.para{margin:0;overflow-wrap:anywhere}
+strong{font-weight:600}
+.k{font:500 11px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.muted{color:var(--muted)} .small{font-size:13px}
+.blank{color:var(--muted);font-style:italic;font-size:13.5px;margin:0}
+
+/* hero */
+.hero{background-color:var(--surface);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:22px 22px;border:1px solid var(--line);border-radius:12px;padding:20px 22px;display:grid;gap:10px}
+.umb{font:600 clamp(22px,3.2vw,30px)/1.15 var(--f-display);margin:0;text-wrap:balance;max-width:30ch}
+.umb-sub{margin:0;color:var(--muted);max-width:72ch}
+.goal{margin:0;padding:2px 0 2px 14px;border-left:2px solid var(--accent);font-size:15.5px;max-width:72ch}
+.goal cite{display:block;font-style:normal;color:var(--muted);font-size:13px;margin-top:4px}
+
+/* controls */
+select.pill{appearance:none;-webkit-appearance:none;border:1px solid var(--line);background-color:var(--surface);color:var(--ink);font:500 12px/1.2 var(--f-mono);padding:4px 22px 4px 9px;border-radius:999px;cursor:pointer;
+  background-image:linear-gradient(45deg,transparent 50%,currentColor 50%),linear-gradient(135deg,currentColor 50%,transparent 50%);background-position:calc(100% - 11px) 52%,calc(100% - 7px) 52%;background-size:4px 4px;background-repeat:no-repeat;max-width:100%}
+select.pri[data-p="P0"]{color:var(--p0);background-color:var(--p0-bg);border-color:transparent}
+select.pri[data-p="P1"]{color:var(--p1);background-color:var(--p1-bg);border-color:transparent}
+select.pri[data-p="P2"]{color:var(--p2);background-color:var(--p2-bg);border-color:transparent}
+select.pri[data-p="P3"]{color:var(--p3);background-color:var(--p3-bg);border-color:transparent}
+select.pri[data-p="none"]{color:var(--muted);border-style:dashed}
+select.st{color:var(--muted)}
+.pdot{display:inline-block;font:500 11px/1 var(--f-mono);padding:3px 6px;border-radius:4px;vertical-align:1px}
+.pdot.P0{color:var(--p0);background:var(--p0-bg)} .pdot.P1{color:var(--p1);background:var(--p1-bg)}
+.pdot.P2{color:var(--p2);background:var(--p2-bg)} .pdot.P3{color:var(--p3);background:var(--p3-bg)} .pdot.none{color:var(--muted);background:var(--sunk)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.chipbtn{border:1px solid var(--line);background:var(--surface);color:var(--muted);font:500 12px var(--f-mono);padding:4px 10px;border-radius:999px;cursor:pointer}
+.chipbtn[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.linkbtn{border:0;background:none;color:var(--accent);font:500 12.5px var(--f-body);padding:2px 0;cursor:pointer;justify-self:start;text-align:left}
+.linkbtn.muted{color:var(--muted)}
+.btn{border:1px solid var(--accent);background:var(--accent);color:var(--on-accent);font:500 13px var(--f-body);padding:6px 12px;border-radius:7px;cursor:pointer;white-space:nowrap}
+.btn.ghost{background:transparent;color:var(--accent)}
+.btn.danger{border-color:var(--bad);color:var(--bad);background:transparent}
+.btn.sm{font-size:12px;padding:3px 9px}
+.tag{font:500 10.5px/1 var(--f-mono);padding:3px 6px;border-radius:4px;background:var(--sunk);color:var(--muted);white-space:nowrap}
+.tags{display:inline-flex;gap:4px;flex-wrap:wrap;vertical-align:1px;margin-left:4px}
+.field,input.field,textarea.field,select.field{font:14px var(--f-body);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:7px;padding:6px 9px;min-width:0;width:100%}
+textarea.field{min-height:84px;resize:vertical;line-height:1.55}
+textarea.code{font:13px/1.55 var(--f-mono)}
+input[type=date].field{font:12.5px var(--f-mono);width:auto}
+form.edit{display:grid;gap:8px;padding:10px 12px;border:1px dashed var(--accent);border-radius:9px;background:var(--accent-soft)}
+form.edit label{display:grid;gap:3px;font-size:12.5px;color:var(--muted)}
+.btnrow{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.hint{font-size:12px;color:var(--muted);margin:0}
+
+/* tracker rows & cards */
+.rows{display:grid;background:var(--surface);border:1px solid var(--line);border-radius:10px;min-width:0}
+.row{display:grid;gap:6px;padding:11px 14px;border-top:1px solid var(--line);min-width:0}
+.row:first-child{border-top:0}
+.row-top{display:flex;gap:8px 12px;align-items:flex-start;flex-wrap:wrap}
+.row-main{flex:1 1 260px;min-width:0}
+.row-title{font-weight:500}
+.row-sub{font-size:13.5px;color:var(--muted)}
+.row-ctl{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.row-foot{display:flex;gap:4px 14px;flex-wrap:wrap;align-items:center}
+.projs{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));align-items:start}
+.proj{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px;display:grid;gap:10px;min-width:0}
+.proj-h{display:flex;gap:10px;align-items:baseline}
+.proj-id{font:600 13px/1 var(--f-mono);color:var(--accent);border:1px solid var(--accent);border-radius:5px;padding:4px 6px;flex:none}
+.proj-h h3{flex:1;min-width:0}
+.tgt{font:500 12px var(--f-mono);color:var(--muted);white-space:nowrap}
+.meta{font-size:13.5px;color:var(--muted)}
+.stages{display:flex;flex-wrap:wrap;gap:6px 14px;font:500 12.5px var(--f-mono);color:var(--muted)}
+.stages b{color:var(--ink);font-weight:600}
+.empty-card{border:1px dashed var(--line);border-radius:10px;padding:14px;color:var(--muted);font-size:13.5px}
+
+/* to-dos */
+.todos{display:grid;min-width:0}
+.td{display:flex;align-items:center;gap:6px 8px;flex-wrap:wrap;padding:6px 0;border-top:1px solid var(--hair);min-width:0}
+.todos > .td:first-child{border-top:0}
+.td input[type=checkbox]{accent-color:var(--accent);width:16px;height:16px;margin:0;flex:none}
+.td-t{flex:1 1 180px;min-width:0;font-size:14px;cursor:pointer;overflow-wrap:anywhere}
+.td.done .td-t{text-decoration:line-through;color:var(--muted)}
+button.td-t{border:0;background:none;padding:2px 4px;margin-left:-4px;text-align:left;color:inherit;font:inherit;font-size:14px;cursor:text;border-radius:5px}
+button.td-t:hover{background:var(--sunk)}
+.td-edit{flex:1 1 220px;min-width:0;display:flex}
+.td-edit .field{padding:4px 8px;font-size:14px}
+.pen{border:0;background:none;color:var(--muted);font-size:15px;line-height:1;padding:5px 6px;border-radius:6px;cursor:pointer;flex:none}
+.pen:hover,.pen:focus-visible{background:var(--sunk);color:var(--ink)}
+@media (hover:hover){.it-row .pen{opacity:0}.it-row:hover .pen,.it-row:focus-within .pen{opacity:1}}
+.td .x{border:0;background:none;color:var(--muted);font-size:16px;line-height:1;padding:2px 4px;cursor:pointer;border-radius:4px}
+.td .x:hover{color:var(--bad)}
+input.ddl{font:12px var(--f-mono);color:var(--ink);background:transparent;border:1px solid var(--line);border-radius:6px;padding:2px 5px;max-width:9.6em}
+input.ddl:not(.has){opacity:.45}
+.due{font:500 11.5px/1 var(--f-mono);padding:4px 7px;border-radius:999px;white-space:nowrap}
+.due.over{background:var(--p0-bg);color:var(--p0)} .due.soon{background:var(--p1-bg);color:var(--p1)} .due.later{background:var(--sunk);color:var(--muted)}
+.wkb{border:0;background:none;color:var(--muted);font:500 11.5px var(--f-mono);padding:3px 5px;border-radius:5px;cursor:pointer;white-space:nowrap}
+.wkb:hover{background:var(--sunk);color:var(--ink)}
+.wkb.on{color:var(--accent);background:var(--accent-soft)}
+.wx{border:0;background:none;color:var(--muted);font-size:17px;line-height:1;padding:2px 6px;border-radius:5px;cursor:pointer;opacity:.5;flex:none}
+.wx:hover,.wx:focus-visible{opacity:1;color:var(--bad);background:var(--sunk)}
+.proj-h .wx{align-self:flex-start}
+.ichip{border:0;background:var(--sunk);color:var(--muted);font:500 11.5px var(--f-mono);padding:3px 7px;border-radius:5px;cursor:pointer;max-width:17em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ichip:hover{color:var(--ink)}
+form.add{display:flex;gap:6px;flex-wrap:wrap;align-items:center;padding-top:6px}
+form.add input[type=text]{flex:1 1 200px;width:auto}
+form.add select.field{flex:0 1 230px;width:auto}
+
+/* progress log */
+.log{display:grid;gap:0;font-size:13.5px}
+.log-e{display:grid;grid-template-columns:84px minmax(0,1fr) auto;gap:8px;padding:5px 0;border-top:1px solid var(--hair);align-items:baseline}
+.log-e:first-child{border-top:0}
+.log-e .d{font:500 12px var(--f-mono);color:var(--muted)}
+.log-e.auto .t{color:var(--muted)}
+.log-e .x{border:0;background:none;color:var(--muted);cursor:pointer;font-size:14px;padding:0 4px}
+.lastlog{font-size:13px;color:var(--muted)}
+.lastlog .d{font-family:var(--f-mono);margin-right:6px}
+
+/* week */
+.wknav{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.wklabel{font:600 22px/1.1 var(--f-display)}
+.wklabel small{font:500 13px var(--f-mono);color:var(--muted);margin-left:8px}
+.grp{display:grid;gap:2px}
+.grp-h{display:flex;gap:8px;align-items:baseline;padding-top:8px}
+.grp-h .k{color:var(--accent)}
+.meter{display:flex;align-items:center;gap:8px;font:500 12px var(--f-mono);color:var(--muted)}
+.bar{height:6px;border-radius:99px;background:var(--sunk);overflow:hidden;flex:1;min-width:60px}
+.bar i{display:block;height:100%;background:var(--accent)}
+.hist{display:grid}
+.hist button{display:grid;grid-template-columns:120px 1fr auto;gap:4px 14px;align-items:baseline;text-align:left;border:0;border-top:1px solid var(--line);background:none;color:var(--ink);padding:10px 4px;cursor:pointer;font:14px var(--f-body)}
+.hist button:first-child{border-top:0}
+.hist button:hover{background:var(--sunk)}
+.hist .w{font:600 13px var(--f-mono)}
+.hist .w small{display:block;font-weight:400;color:var(--muted)}
+.hist .g{color:var(--muted);font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.hist .s{font:500 12px var(--f-mono);color:var(--muted);white-space:nowrap}
+
+/* timeline */
+.tl-p{display:grid;grid-template-columns:92px minmax(0,1fr);gap:12px;padding:10px 0;border-top:1px solid var(--line)}
+.tl-p:first-child{border-top:0}
+.tl-when{font:500 13px/1.4 var(--f-mono);padding-top:6px}
+.tl-p.now .tl-when{color:var(--accent)}
+.tl-p.now .tl-when::after{content:"现在";display:block;width:max-content;font-size:10.5px;letter-spacing:.06em;margin-top:4px;padding:2px 6px;border-radius:4px;background:var(--accent-soft)}
+.tl-p.past{opacity:.62}
+.tl-p.over .tl-when{color:var(--bad)}
+
+/* freshness */
+.fr{display:flex;align-items:center;gap:8px 12px;flex-wrap:wrap;padding:9px 0;border-top:1px solid var(--line)}
+.fr:first-child{border-top:0}
+.fr-t{flex:1 1 160px;min-width:0;font-weight:500}
+.fr-t small{display:block;font-weight:400;color:var(--muted);font-size:12.5px}
+.age{font:500 12px var(--f-mono);padding:3px 8px;border-radius:999px;white-space:nowrap}
+.age.ok{color:var(--ok);background:var(--p2-bg)} .age.warn{color:var(--warn);background:var(--p1-bg)} .age.bad{color:var(--bad);background:var(--p0-bg)} .age.na{color:var(--muted);background:var(--sunk)}
+
+/* conversations */
+.convs{display:grid;gap:14px;max-width:820px}
+.conv{margin:0}
+.conv-h{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.who{font:600 15px var(--f-display)}
+.date{font:500 12px var(--f-mono);color:var(--muted)}
+.conv ul.list{font-size:14px}
+
+/* career */
+.paths{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr))}
+.box.primary{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+.rank{font:500 11px var(--f-mono);padding:3px 7px;border-radius:4px;background:var(--accent-soft);color:var(--accent);white-space:nowrap}
+.formula{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.fx{display:grid;gap:2px;align-content:start}
+.fx b{font:600 40px/1 var(--f-display);color:var(--accent)}
+.fx span{font-weight:500}
+.fx small{color:var(--muted);font-size:12.5px}
+.slot{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;align-items:center}
+.slot b{font:600 18px var(--f-display);color:var(--accent);text-align:center}
+.chain{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font:500 13px var(--f-mono)}
+.chain span{padding:4px 9px;border-radius:6px;background:var(--sunk)}
+.chain i{font-style:normal;color:var(--muted)}
+.lc{display:flex;gap:8px;align-items:flex-start;font-size:14px;padding:3px 0;cursor:pointer}
+.lc input{accent-color:var(--accent);margin-top:4px;flex:none}
+.lc.done span{color:var(--muted);text-decoration:line-through}
+
+/* rating, steps */
+.rate{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:7px 0;border-top:1px solid var(--line)}
+.rate:first-child{border-top:0}
+.rate-t{flex:1 1 260px;min-width:0;font-size:14px}
+.dots{display:flex;gap:4px}
+.dots button{width:24px;height:24px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--muted);font:500 11px var(--f-mono);cursor:pointer;padding:0}
+.dots button.on{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.hist-dates{display:flex;gap:6px;flex-wrap:wrap}
+
+.inbox-i{display:flex;gap:8px;align-items:flex-start;padding:8px 0;border-top:1px solid var(--hair)}
+.inbox-i:first-child{border-top:0}
+.inbox-i p{margin:0;flex:1;min-width:0;white-space:pre-wrap;overflow-wrap:anywhere;font-size:14px}
+.inbox-i .x{border:0;background:none;color:var(--muted);cursor:pointer;font-size:16px}
+.update{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(64px + env(safe-area-inset-bottom,0px));display:flex;gap:10px;align-items:center;background:var(--surface);color:var(--ink);border:1px solid var(--accent);font:500 13.5px var(--f-body);padding:8px 10px 8px 14px;border-radius:10px;box-shadow:0 8px 24px var(--shadow);z-index:49;max-width:calc(100vw - 32px)}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);font:500 13px var(--f-body);padding:9px 14px;border-radius:8px;z-index:50;max-width:calc(100vw - 32px)}
+.flash{outline:2px solid var(--p1);outline-offset:3px;border-radius:6px}
+@media (prefers-reduced-motion: no-preference){
+  .flash{animation:fl 1.6s ease-out forwards}
+  @keyframes fl{0%,60%{outline-color:var(--p1)}100%{outline-color:transparent}}
+}
+details.old summary{cursor:pointer;font-weight:500}
+details.old[open] summary{margin-bottom:8px}
+
+/* connect */
+.connect{max-width:620px;margin:20px auto 0;display:grid;gap:16px}
+.connect ol{margin:0;padding-left:1.3em;display:grid;gap:6px;font-size:14px}
+.connect code{font:12.5px var(--f-mono);background:var(--sunk);padding:1px 5px;border-radius:4px}
+.err{color:var(--bad);font-size:13.5px;margin:0}
+@media (max-width:560px){
+  .tl-p{grid-template-columns:68px minmax(0,1fr)}
+  .formula{gap:6px} .fx b{font-size:32px}
+  .hist button{grid-template-columns:96px 1fr}
+  .hist .s{grid-column:2}
+  .log-e{grid-template-columns:72px minmax(0,1fr) auto}
+}
+
+/* ---- layered layout ---- */
+.page-h{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.page-h h1{font:600 24px/1.2 var(--f-display);margin:0}
+.page-h .aside{margin-left:auto;display:flex;gap:8px}
+.narrow{max-width:880px;margin:0 auto;width:100%}
+.list-i{display:grid;gap:8px}
+.it{background:var(--surface);border:1px solid var(--line);border-radius:10px;min-width:0}
+.it-row{display:flex;align-items:center;gap:4px 8px;padding:3px 10px 3px 4px;min-width:0;flex-wrap:wrap}
+.it-h{flex:1 1 220px;min-width:0;display:flex;align-items:center;gap:8px;border:0;background:none;color:var(--ink);font:500 15px/1.35 var(--f-body);text-align:left;padding:8px 6px;cursor:pointer;border-radius:7px}
+.it-h:hover{background:var(--sunk)}
+.it-t{min-width:0;overflow-wrap:anywhere}
+.it-meta{display:flex;gap:6px;align-items:center;font:500 12px var(--f-mono);color:var(--muted);white-space:nowrap}
+.car{display:inline-block;width:0;height:0;border-left:5px solid var(--muted);border-top:4px solid transparent;border-bottom:4px solid transparent;transition:transform .15s;flex:none;margin:0 3px}
+.open>.it-row .car,.open>.grp-hd .car{transform:rotate(90deg)}
+@media (prefers-reduced-motion: reduce){.car{transition:none}}
+.xb{display:grid;gap:10px;min-width:0}
+.it>.xb{border-top:1px solid var(--hair);padding:12px 16px 14px 34px}
+.grp-s{display:grid;gap:10px;min-width:0}
+.grp-hd{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.grp-btn{display:flex;align-items:center;gap:8px;border:0;background:none;color:var(--ink);cursor:pointer;padding:4px 2px;font:inherit}
+.grp-btn h2{font:600 18px/1.25 var(--f-display);margin:0}
+.cnt{font:500 12px var(--f-mono);color:var(--muted)}
+.grp-hd .aside{margin-left:auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.star{border:0;background:none;color:var(--muted);font-size:16px;line-height:1;padding:5px 6px;border-radius:6px;cursor:pointer}
+.star.on{color:var(--warn)}
+.star:hover{background:var(--sunk)}
+.sub-x>.it-row{padding:0}
+.sub-x>.xb{padding-top:6px}
+.mini-h{display:flex;align-items:center;gap:6px;border:0;background:none;color:var(--muted);font:500 13px var(--f-body);cursor:pointer;padding:4px 2px}
+.sub-x.open .mini-h .car{transform:rotate(90deg)}
+.lastlog{font-size:13px;color:var(--muted);min-width:0;flex:1 1 160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.act{display:inline-flex;gap:2px;align-items:center}
+@media (hover:hover){.td .act,.fr .act{opacity:0;transition:opacity .12s}.td:hover .act,.td:focus-within .act,.fr:hover .act,.fr:focus-within .act{opacity:1}}
+form.add.slim{padding-top:0}
+form.add.slim input[type=text],form.add.slim textarea{flex:1 1 200px;width:auto}
+form.add.slim textarea{min-height:0}
+.wkgrid{display:grid;gap:20px;grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);align-items:start}
+.wknav{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+.wklabel{font:600 24px/1.2 var(--f-display);margin:0}
+.wklabel span{font:500 13px var(--f-mono);color:var(--muted);margin-left:6px}
+textarea.goal{font-size:15px;min-height:0}
+.plan.box{gap:6px}
+.wk-it{display:grid;padding:8px 0 2px}
+.wk-it+.wk-it{border-top:1px solid var(--line)}
+.wk-it .todos{padding-left:16px}
+.wk-it-h{justify-self:start;display:flex;gap:7px;align-items:center;border:0;background:none;padding:2px 0 4px;font:600 14px/1.35 var(--f-body);color:var(--ink);cursor:pointer;text-align:left}
+.wk-it-h .proj-id{font-size:11px;padding:2px 5px}
+.wk-it-h:hover{color:var(--accent)}
+.it.proj{padding:0;display:block;gap:0}
+.grp-k{font:500 11.5px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);padding-top:6px}
+.h-sm{font:600 15px var(--f-display);margin:0}
+.subtabs{display:flex;gap:6px;flex-wrap:wrap}
+.notes ul.list{font-size:14px}
+.linkbtn.danger{color:var(--bad)}
+.stus{padding:2px 14px}
+.stu{display:grid;gap:2px;padding:10px 0;border-top:1px solid var(--line);min-width:0}
+.stu:first-child{border-top:0}
+.stu-h{display:flex;align-items:center;gap:8px 12px;flex-wrap:wrap}
+.stu-n{font-weight:600;min-width:7.5em}
+.pchips{display:flex;gap:5px;flex-wrap:wrap;align-items:center;flex:1 1 220px;min-width:0}
+.pchip{border:1px solid var(--line);background:var(--surface);color:var(--muted);font:600 12px var(--f-mono);min-width:30px;padding:4px 7px;border-radius:6px;cursor:pointer}
+.pchip:hover{border-color:var(--accent);color:var(--accent)}
+.pchip.on{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.pchip.wide{font:500 12px var(--f-body);max-width:18em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.act-r{display:flex;gap:2px;margin-left:auto}
+.stu .row-sub{margin:0}
+.pchips select.pill{max-width:11em}
+@media (hover:hover){.stu-h .act-r{opacity:0}.stu:hover .act-r,.stu:focus-within .act-r{opacity:1}}
+.td.focus{background:var(--p1-bg);border-radius:7px;padding-left:8px;padding-right:8px;margin:2px -8px;border-top-color:transparent}
+.td.focus+.td{border-top-color:transparent}
+.td.focus .td-t{font-weight:600}
+.wkb.foc.on{color:var(--p1);font-weight:600}
+.tag.foc{color:var(--p1);background:var(--p1-bg)}
+.ch-box{padding:4px 16px}
+.ch-box .fr{padding:8px 0}
+.ch-box .fr-t{font-weight:500;font-size:14.5px}
+.ch-box .age{min-width:5.5em;text-align:center}
+.cluster{display:grid;gap:10px}
+.promo-todos{display:grid;gap:4px;padding-bottom:6px;border-bottom:1px solid var(--hair)}
+.step-pts{font-size:14px;color:var(--ink)}
+.sub-k{font:600 14.5px var(--f-display);padding-top:6px;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.cluster-k{font:500 11.5px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding-top:8px;border-top:1px solid var(--line)}
+.plan{display:grid;gap:14px}
+.plan-sum{display:grid;gap:6px}
+.wk-area{--c:var(--c-think);gap:0;padding:14px 18px 8px}
+.wk-area[data-c="research"]{--c:var(--c-research)} .wk-area[data-c="dim"]{--c:var(--c-dim)} .wk-area[data-c="exp"]{--c:var(--c-exp)} .wk-area[data-c="admin"]{--c:var(--c-admin)}
+.wk-area-h{display:flex;align-items:center;gap:10px;padding-bottom:8px;border-bottom:2px solid var(--c)}
+.wk-area-h h2{font:600 18px/1.2 var(--f-display);margin:0;color:var(--c)}
+.wk-area-h .cnt{margin-left:auto;font:500 12.5px var(--f-mono);color:var(--muted)}
+.dot{width:10px;height:10px;border-radius:3px;background:var(--c);flex:none}
+.quick-box{padding:10px 14px}
+#tab-research[aria-selected="true"]{border-bottom-color:var(--c-research)} #tab-exp[aria-selected="true"]{border-bottom-color:var(--c-exp)}
+#tab-dim[aria-selected="true"]{border-bottom-color:var(--c-dim)} #tab-admin[aria-selected="true"]{border-bottom-color:var(--c-admin)} #tab-think[aria-selected="true"]{border-bottom-color:var(--c-think)}
+@media (max-width:560px){.wk-area{padding:12px 12px 6px}.wk-it .todos{padding-left:6px}}
+.tag.rep{color:var(--accent);background:var(--accent-soft)}
+.rep-l{display:flex;gap:4px;align-items:center;font-size:12.5px;color:var(--muted);white-space:nowrap;cursor:pointer}
+.it-row select.st{border-color:transparent;background-color:transparent}
+.it-row:hover select.st,.it-row select.st:focus-visible{border-color:var(--line);background-color:var(--surface)}
+.td-t,button.td-t{flex:1 1 0;min-width:8em}
+.td>.due,.td>.wkb,.td>.tag,.td>.ichip{flex:none}
+.box{grid-template-columns:minmax(0,1fr)}
+form.add select.field{max-width:100%}
+.more{display:none;border:0;background:none;color:var(--muted);font-size:16px;line-height:1;padding:2px 6px;border-radius:5px;cursor:pointer;margin-left:auto}
+@media (hover:none){.td .act{display:none}.td.show-act .act{display:flex;flex-wrap:wrap;flex-basis:100%;justify-content:flex-end;gap:6px}.td .more{display:inline-block;margin-left:0}}
+@media (max-width:560px){.it-h{flex-basis:100%}.it-row{padding:2px 8px 6px 4px}.it-row>.it-meta{margin-left:30px}.ichip{max-width:42vw}}
+.tag.restore{display:inline-flex;gap:8px;align-items:center;padding:5px 9px;font-size:12px}
+.filters{display:grid;gap:8px}
+#settings-btn[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}
+@media (max-width:860px){.wkgrid{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:560px){.it>.xb{padding:10px 12px 12px 14px}.page-h h1,.wklabel{font-size:21px}}
+/* ---- look (type, nav, cards, controls) ---- */
+body{font-size:15px;line-height:1.6;font-variant-numeric:tabular-nums;letter-spacing:-.003em}
+:focus-visible{outline:2px solid var(--accent-hi)}
+textarea.code,.connect code{font-family:var(--f-code)}
+.mast{background:var(--bg)}
+.mast-row{padding-block:18px 8px}
+.brand{font:700 22px/1.15 var(--f-display);letter-spacing:-.005em}
+.brand small{font:400 12px/1.4 var(--f-body);margin-top:4px}
+.tabbar{background:var(--glass);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);border-bottom:1px solid var(--hair)}
+.tabs{gap:2px;margin-bottom:0;padding-block:7px}
+.tab{border-bottom:0;border-radius:8px;padding:6px 13px;font:500 14px var(--f-body);transition:background-color .15s,color .15s}
+.tab:hover{background:var(--sunk)}
+.tab[aria-selected="true"]{background:var(--accent-soft);color:var(--ink);font-weight:600}
+.search input{background:var(--sunk);border-color:transparent;border-radius:10px;padding:8px 34px 8px 12px;transition:background-color .15s,border-color .15s,box-shadow .15s}
+.search input:focus{outline:none;background:var(--surface);border-color:var(--accent-hi);box-shadow:0 0 0 3px var(--accent-soft)}
+.search kbd{font-family:var(--f-body);border-color:var(--line);border-radius:5px}
+.results{border-color:var(--hair);border-radius:14px;box-shadow:0 20px 44px var(--shadow);padding:8px}
+.results button{border-radius:9px}
+.iconbtn{border-radius:10px;font:500 13px var(--f-body);padding:7px 13px}
+.iconbtn:hover{background:var(--sunk)}
+.sync{font:500 12px var(--f-body);padding:6px 12px}
+#settings-btn[aria-pressed="true"]{border-color:var(--accent-hi);color:var(--ink);background:var(--accent-soft)}
+main{padding-block:32px 80px}
+.page-h h1{font:700 30px/1.15 var(--f-display);letter-spacing:-.01em}
+.grp-btn h2,.sec-h h2{font:700 20px/1.25 var(--f-display)}
+.wklabel{font:700 28px/1.15 var(--f-display);letter-spacing:-.01em}
+.wklabel span{font:500 13px var(--f-body)}
+.wk-area-h h2{font:700 19px/1.2 var(--f-display)}
+.umb,.fx b,.slot b{font-family:var(--f-display)}
+h3,.h-sm,.sub-k,.who{font-family:var(--f-body)}
+.k,.eyebrow,.grp-k,.cluster-k,.results .rt{letter-spacing:.04em}
+.box,.it,.rows,.proj,.hero{border-color:var(--line);border-radius:14px;box-shadow:var(--card-shadow)}
+.hero{background-image:none}
+.empty-card{border-radius:14px}
+.it-h{border-radius:10px}
+.it>.xb{border-top-color:var(--hair)}
+.btn{background:var(--btn);border-color:var(--btn);color:var(--on-btn);border-radius:999px;padding:7px 16px;font:500 13px var(--f-body);transition:opacity .15s,background-color .15s}
+.btn:hover{opacity:.88}
+.btn.ghost{background:var(--surface);border-color:var(--line);color:var(--ink)}
+.btn.ghost:hover{opacity:1;background:var(--sunk)}
+.btn.danger{background:transparent;border-color:var(--bad);color:var(--bad)}
+.btn.sm{padding:4px 12px;font-size:12.5px}
+.chipbtn{font:500 12.5px var(--f-body);padding:5px 12px;transition:background-color .15s}
+.chipbtn:hover{background:var(--sunk)}
+.chipbtn[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent-hi);color:var(--ink);font-weight:600}
+.field,input.field,textarea.field,select.field{background:var(--surface);border-radius:10px;padding:7px 10px;transition:border-color .15s,box-shadow .15s}
+.field:focus,input.ddl:focus{outline:none;border-color:var(--accent-hi);box-shadow:0 0 0 3px var(--accent-soft)}
+input.ddl{border-radius:8px}
+form.edit{border:1px solid var(--line);border-radius:14px;background:var(--sunk);padding:12px 14px}
+select.pill{font-family:var(--f-body)}
+.tag,.ichip,.pdot{border-radius:6px}
+.proj-id{border-radius:6px}
+.td input[type=checkbox],.lc input{accent-color:var(--accent-hi)}
+.bar i{background:var(--accent-hi)}
+.td.focus{border-radius:9px}
+.update{border-color:var(--line);border-radius:14px;box-shadow:0 16px 40px var(--shadow)}
+.toast{border-radius:12px;box-shadow:0 10px 30px var(--shadow)}
+.flash{border-radius:10px}
+.tl-p.now .tl-when::after{border-radius:6px}
+@media (max-width:560px){.page-h h1,.wklabel{font-size:24px}.mast-row{padding-block:12px 6px}}
+/* ---- motion ---- */
+main{overflow-x:clip}
+.tabs{position:relative}
+.tab{position:relative;z-index:1;transition:background-color .15s,color .15s,transform .12s}
+.tab[aria-selected="true"],.tab[aria-selected="true"]:hover{background:transparent}
+.tab-ind{position:absolute;left:0;top:7px;bottom:7px;width:0;border-radius:8px;background:var(--accent-soft);pointer-events:none}
+.btn,.chipbtn,.iconbtn,.pchip,.wkb,.ichip,.sync{transition:background-color .15s,border-color .15s,color .15s,opacity .15s,transform .12s}
+.btn:active,.chipbtn:active,.iconbtn:active,.pchip:active,.tab:active,.sync:active{transform:scale(.96)}
+.it-h,button.td-t,.wk-it-h,.hist button,.results button,.pen,.star,.wx,.x,.grp-btn,.mini-h{transition:background-color .15s,color .15s}
+.car{transition:transform .3s cubic-bezier(.32,.72,0,1)}
+/* task checkboxes: round, fill and tick (Reminders style); option checkboxes: rounded squares */
+.td input[type=checkbox],.lc input[type=checkbox],.rep-l input[type=checkbox]{-webkit-appearance:none;appearance:none;width:18px;height:18px;margin:0;flex:none;display:inline-grid;place-content:center;border-radius:50%;border:1.5px solid color-mix(in srgb,var(--muted) 55%,transparent);background:var(--surface);cursor:pointer;transition:background-color .2s,border-color .2s,transform .15s}
+.rep-l input[type=checkbox]{width:16px;height:16px;border-radius:5px}
+.td input[type=checkbox]::before,.lc input[type=checkbox]::before,.rep-l input[type=checkbox]::before{content:"";width:10px;height:10px;background:var(--on-accent);clip-path:polygon(14% 44%,0 65%,50% 100%,100% 16%,80% 0%,43% 62%);transform:scale(0);transition:transform .24s cubic-bezier(.3,1.6,.5,1)}
+.rep-l input[type=checkbox]::before{width:9px;height:9px}
+.td input[type=checkbox]:checked,.lc input[type=checkbox]:checked,.rep-l input[type=checkbox]:checked{background:var(--accent-hi);border-color:var(--accent-hi)}
+.td input[type=checkbox]:checked::before,.lc input[type=checkbox]:checked::before,.rep-l input[type=checkbox]:checked::before{transform:scale(1)}
+.td input[type=checkbox]:hover,.lc input[type=checkbox]:hover,.rep-l input[type=checkbox]:hover{border-color:var(--accent-hi)}
+.td input[type=checkbox]:active,.lc input[type=checkbox]:active{transform:scale(.86)}
+.td input[type=checkbox]:focus-visible,.lc input[type=checkbox]:focus-visible{border-radius:50%;outline-offset:2px}
+.rep-l input[type=checkbox]:focus-visible{border-radius:5px;outline-offset:2px}
+.lc input[type=checkbox]{margin-top:3px}
+.td-t,.lc span{text-decoration-line:line-through;text-decoration-color:transparent;transition:color .25s,text-decoration-color .25s}
+.td.done .td-t,.lc.done span{text-decoration-color:currentColor}
+@media (forced-colors: active){.td:not(.done) .td-t,.lc:not(.done) span{text-decoration-line:none}}
+.results:not([hidden]){transform-origin:top right;animation:drop .18s cubic-bezier(.32,.72,0,1)}
+.toast:not([hidden]),.update:not([hidden]){animation:rise .32s cubic-bezier(.32,.72,0,1)}
+@keyframes drop{from{opacity:0;transform:translateY(-4px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes rise{from{opacity:0;transform:translate(-50%,12px) scale(.97)}to{opacity:1;transform:translate(-50%,0) scale(1)}}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<header class="mast">
+  <div class="wrap">
+    <div class="mast-row">
+      <h1 class="brand">PhD Planner<small id="today-line">—</small></h1>
+      <div class="mast-tools">
+        <div class="search">
+          <input id="q" type="search" placeholder="搜索全部内容…" autocomplete="off" aria-label="搜索全部内容">
+          <kbd>/</kbd>
+          <div class="results" id="results" hidden></div>
+        </div>
+        <button class="sync" id="sync" type="button" data-s="none">—</button>
+        <button class="iconbtn" id="settings-btn" type="button" data-act="tab" data-v="settings">设置</button>
+      </div>
+    </div>
+  </div>
+</header>
+<nav class="tabbar" aria-label="分区"><div class="wrap"><div class="tabs" role="tablist" id="tabs"></div></div></nav>
+<main class="wrap" id="main">
+  <div id="panels"></div>
+</main>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+<div class="update" id="update" role="status" hidden>网页有新版本 <button class="btn sm" type="button" data-act="reload">刷新</button></div>
+
+<script>
+(function(){
+'use strict';
+
+/* ============================== constants ============================== */
+const TABS=[['week','本周'],['research','科研'],['exp','经历'],['admin','杂事'],['dim','维度'],['think','思考'],['tl','时间线']];
+const TABNAME=Object.fromEntries(TABS);
+const AREAS=['research','exp','admin','career','profile','step'];
+const AREANAME={research:'科研',exp:'经历',intern:'经历',visit:'经历',career:'维度',profile:'维度',expo:'维度',net:'维度',talk:'维度',service:'维度',admin:'杂事',step:'思考'};
+const SECTIONS=[['research','科研'],['exp','经历'],['admin','杂事'],['dim','维度'],['think','思考']];
+const secOf=a=>({research:'research',exp:'exp',intern:'exp',visit:'exp',admin:'admin',net:'dim',talk:'dim',service:'dim',career:'dim',profile:'dim',expo:'dim'})[a]||'think';
+const SECNAME=Object.fromEntries(SECTIONS);
+const secItems=sec=>D.items.filter(x=>secOf(x.area)===sec);
+const PRI=[['P0','P0 紧急'],['P1','P1 重要'],['P2','P2 推进'],['P3','P3 有空'],['','— 未设']];
+const PRANK={P0:0,P1:1,P2:2,P3:3,'':4};
+const SETS={
+  proj:['Maintaining','Submitting','Pushing','Starting','Paused','Done'],
+  collab:['参与中','想法','待联系','观望','已结束'],
+  lead:['想法','待联系','聊过','合作中','放弃'],
+  intern:['想法','联系中','已投递','面试中','Offer','放弃'],
+  visit:['想法','联系中','申请中','已确定','放弃'],
+  app:['关注','准备中','已提交','有结果','放弃'],
+  todo:['想法','准备中','进行中','完成'],
+  person:['想认识','联系中','聊过','保持联系'],
+};
+const KIND_SET={promo:'todo',person:'person',proj:'proj',collab:'collab',lead:'lead',intern:'intern',visit:'visit',app:'app',todo:'todo',step:'todo'};
+const TAGS={r:'研究',i:'实习',v:'Visiting',c:'职业',p:'曝光',m:'心态'};
+const TAGCODE={'研究':'r','实习':'i','visiting':'v','访问':'v','职业':'c','曝光':'p','心态':'m'};
+const EMPTY={v:2,items:[],todos:[],logs:[],weeks:{},routines:[],
+  steps:[{id:'hb',title:'退半步',en:'Half a Step Back',desc:'',items:[],checks:{},history:[]},{id:'fb',title:'退一步',en:'Full Step Back',desc:'',items:[],checks:{},history:[]}],
+  timeline:{version:'',periods:[],always:[]},blocks:{},abilities:[],rate:{},rateAt:'',channels:[],
+  launchTpl:[{g:'Open-source',items:['GitHub']},{g:'Advertisement',items:['ArXiv upload','Personal homepage','Social Media']},{g:'Connection Opportunity',items:['Email related researchers']}],
+  launch:{},letters:['','',''],absorb:[],checks:{},inbox:[],convs:[],hidden:{},students:[]};
+
+/* ============================== utilities ============================== */
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function md(s){return esc(s).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\[([^\]]+)\]\((https?:[^)\s]+)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>')}
+const clone=x=>JSON.parse(JSON.stringify(x));
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const pad=n=>String(n).padStart(2,'0');
+const iso=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const parseD=s=>{const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(s||'');return m?new Date(+m[1],+m[2]-1,+m[3]):null};
+const NOW=new Date(), TODAY=new Date(NOW.getFullYear(),NOW.getMonth(),NOW.getDate());
+const TODAY_ISO=iso(TODAY), TODAY_YM=TODAY_ISO.slice(0,7);
+const daysTo=s=>{const d=parseD(s);return d?Math.round((d-TODAY)/864e5):null};
+const mdShort=s=>{const d=parseD(s);return d?(d.getMonth()+1)+'.'+d.getDate():''};
+const nowHM=()=>{const d=new Date();return pad(d.getHours())+':'+pad(d.getMinutes())};
+function isoWeek(d){const t=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));const day=t.getUTCDay()||7;t.setUTCDate(t.getUTCDate()+4-day);const y=t.getUTCFullYear();const w=Math.ceil(((t-Date.UTC(y,0,1))/864e5+1)/7);return y+'-W'+pad(w)}
+function weekMonday(wk){const m=/^(\d{4})-W(\d{2})$/.exec(wk);const y=+m[1],w=+m[2];const jan4=new Date(y,0,4);const day=jan4.getDay()||7;return new Date(y,0,4-day+1+(w-1)*7)}
+function addWeeks(wk,n){const m=weekMonday(wk);m.setDate(m.getDate()+7*n);return isoWeek(m)}
+function weekRange(wk){const m=weekMonday(wk);const s=new Date(m);s.setDate(s.getDate()+6);return [iso(m),iso(s)]}
+const CUR_WK=isoWeek(TODAY);
+function hash(s){let h=5381;for(let i=0;i<s.length;i++)h=((h<<5)+h+s.charCodeAt(i))|0;return (h>>>0).toString(36)}
+const isObj=x=>x!==null&&typeof x==='object'&&!Array.isArray(x);
+const same=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
+/* three-way merge: keeps changes made on this device and on others since the last sync */
+function merge3(b,l,r){
+  if(same(l,r))return l; if(same(b,l))return r; if(same(b,r))return l;
+  if(isObj(l)&&isObj(r)){const bb=isObj(b)?b:{};const out={};
+    for(const k of new Set([...Object.keys(l),...Object.keys(r)])){
+      const inL=k in l,inR=k in r,inB=k in bb;
+      if(inL&&inR)out[k]=merge3(bb[k],l[k],r[k]);
+      else if(inL){if(!(inB&&same(bb[k],l[k])))out[k]=l[k]}
+      else{if(!(inB&&same(bb[k],r[k])))out[k]=r[k]}}
+    return out}
+  if(Array.isArray(l)&&Array.isArray(r)){
+    const all=l.concat(r);
+    if(all.every(x=>isObj(x)&&typeof x.id==='string')){
+      const bm=new Map((Array.isArray(b)?b:[]).filter(x=>isObj(x)&&x.id).map(x=>[x.id,x]));
+      const lm=new Map(l.map(x=>[x.id,x])),rm=new Map(r.map(x=>[x.id,x]));const out=[];
+      for(const x of l){if(rm.has(x.id))out.push(merge3(bm.get(x.id),x,rm.get(x.id)));else if(!(bm.has(x.id)&&same(bm.get(x.id),x)))out.push(x)}
+      for(const x of r){if(!lm.has(x.id)&&!(bm.has(x.id)&&same(bm.get(x.id),x)))out.push(x)}
+      return out}
+    if(all.every(x=>typeof x==='string')){const bs=new Set(Array.isArray(b)?b:[]);
+      const out=l.filter(x=>!(bs.has(x)&&!r.includes(x)));for(const x of r)if(!out.includes(x)&&!bs.has(x))out.push(x);return out}
+  }
+  return l;
+}
+function b64enc(str){const bytes=new TextEncoder().encode(str);let bin='';for(let i=0;i<bytes.length;i+=0x8000)bin+=String.fromCharCode.apply(null,bytes.subarray(i,i+0x8000));return btoa(bin)}
+function b64dec(b64){const bin=atob(b64.replace(/\s/g,''));const bytes=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);return new TextDecoder().decode(bytes)}
+const ls={get(k){try{return JSON.parse(localStorage.getItem(k)||'null')}catch(e){return null}},
+  set(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){return false}},
+  del(k){try{localStorage.removeItem(k)}catch(e){}}};
+
+/* line format used by every editable block:
+   "- text" bullet · "  - text" sub-bullet · "=> a → b" chain · other lines are paragraphs */
+function renderText(text){
+  const lines=String(text||'').split('\n');let html='',list=null;
+  const flush=()=>{if(list){html+=ulTree(list);list=null}};
+  for(const raw of lines){
+    if(!raw.trim()){flush();continue}
+    const m=/^(\s*)[-*]\s+(.*)$/.exec(raw);
+    if(m){const lvl=m[1].length>=2?1:0;list=list||[];
+      if(lvl===0||!list.length)list.push({t:m[2],sub:[]});else list[list.length-1].sub.push(m[2]);continue}
+    flush();
+    const c=/^=>\s*(.*)$/.exec(raw.trim());
+    if(c){html+=`<div class="chain">${c[1].split('→').map(s=>`<span>${md(s.trim())}</span>`).join('<i>→</i>')}</div>`;continue}
+    html+=`<p class="para" data-find>${md(raw.trim())}</p>`;
+  }
+  flush();return html}
+function ulTree(list){return `<ul class="list">${list.map(n=>`<li data-find>${md(n.t)}${n.sub.length?`<ul class="list">${n.sub.map(s=>`<li>${md(s)}</li>`).join('')}</ul>`:''}</li>`).join('')}</ul>`}
+
+/* ============================== state ============================== */
+let D=null;                       // synced data (lives in the private repo)
+const CFG_KEY='phd-planner.github',CACHE_KEY='phd-planner.cache',UI_KEY='phd-planner.ui',PREVIEW_KEY='phd-planner.preview';
+const U=Object.assign({tab:'week',week:'',rf:'',rsort:false,ff:'hi',tf:'ddl',cfWho:'',cfTag:'',theme:'system',pickArea:'',paper:'C',draft:'',sub:'half'},ls.get(UI_KEY)||{});
+U.exp=U.exp||{};U.selView=U.selView||{};
+const T={editStudent:'',addingStudent:false,editTodo:'',ddlOpen:{},open:{},openLog:{},editBlock:'',editItem:'',adding:'',editConv:'',picker:false,confirm:'',connectErr:'',connectStage:'',stale:{}};
+const saveUI=()=>ls.set(UI_KEY,U);
+let IX={items:new Map(),todos:new Map(),byItem:new Map()};
+const adopt=x=>normalize(clone(x));
+function normalize(d){const out=Object.assign(clone(EMPTY),d||{});for(const k of Object.keys(EMPTY))if(out[k]==null)out[k]=clone(EMPTY[k]);
+  for(const it of out.items){if(it.kind==='lead'){it.kind='collab';it.set='collab'}if(it.area==='intern'||it.area==='visit')it.area='exp'}
+  return out}
+function reindex(){PLAN_CACHE={};
+  IX={items:new Map(D.items.map(x=>[x.id,x])),todos:new Map(D.todos.map(t=>[t.id,t])),byItem:new Map()};
+  for(const t of D.todos){if(t.del)continue;if(!IX.byItem.has(t.item))IX.byItem.set(t.item,[]);IX.byItem.get(t.item).push(t)}
+}
+const itemById=id=>IX.items.get(id);
+const todoById=id=>IX.todos.get(id);
+const todosOf=it=>IX.byItem.get(it.id)||[];
+const liveTodos=()=>D.todos.filter(t=>!t.del&&IX.items.has(t.item));
+const label=it=>it.kind==='proj'?it.id+' · '+it.title:it.kind==='promo'?((itemById(it.paper)||{}).title||it.title)+' · 宣传':it.title;
+const pri=it=>it.pri||'';
+const st=it=>it.st||SETS[it.set||KIND_SET[it.kind]||'todo'][0];
+const setOf=it=>it.set||KIND_SET[it.kind]||'todo';
+const areaItems=(area,kind)=>D.items.filter(x=>x.area===area&&(!kind||x.kind===kind));
+const week=wk=>D.weeks[wk]||{plan:[],goals:'',review:'',rec:{},focus:{}};
+function ensureWeek(wk){if(!D.weeks[wk])D.weeks[wk]={plan:[],goals:'',review:'',rec:{},focus:{}};const w=D.weeks[wk];w.plan=w.plan||[];w.rec=w.rec||{};w.focus=w.focus||{};PLAN_CACHE={};return w}
+let PLAN_CACHE={};
+function planIds(wk){if(PLAN_CACHE[wk])return PLAN_CACHE[wk];
+  const W=week(wk);const [mon,sun]=weekRange(wk);const skip=W.skip||{};
+  const auto=liveTodos().filter(t=>t.ddl&&!skip[t.id]&&((t.ddl>=mon&&t.ddl<=sun)||(wk===CUR_WK&&t.ddl<mon&&!t.done))).sort((a,b)=>a.ddl<b.ddl?-1:1).map(t=>t.id);
+  const ids=[...(W.plan||[]).filter(id=>!skip[id]),...auto];return PLAN_CACHE[wk]=[...new Set(ids)]}
+const inWeek=(id,wk)=>planIds(wk).includes(id);
+function weekAdd(wk,id){const w=ensureWeek(wk);w.skip=w.skip||{};delete w.skip[id];if(!w.plan.includes(id))w.plan.push(id)}
+function weekRemove(wk,id){const w=ensureWeek(wk);w.plan=w.plan.filter(x=>x!==id);delete w.focus[id];const t=todoById(id);if(t&&t.ddl){w.skip=w.skip||{};w.skip[id]=true}}
+const block=id=>D.blocks[id]||{title:'',type:'list',text:''};
+const addLog=(item,t,extra)=>D.logs.push(Object.assign({id:uid(),item,d:TODAY_ISO,t},extra||{}));
+
+/* ============================== storage & sync ============================== */
+const GH={cfg:null,
+  base(){const c=this.cfg;return `https://api.github.com/repos/${encodeURIComponent(c.owner)}/${encodeURIComponent(c.repo)}`},
+  url(){return this.base()+'/contents/'+this.cfg.path.split('/').map(encodeURIComponent).join('/')},
+  h(accept){return {'Authorization':'Bearer '+this.cfg.token,'Accept':accept||'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'}},
+  async repo(){const r=await fetch(this.base(),{headers:this.h(),cache:'no-store'});if(!r.ok)throw await ghErr(r);return r.json()},
+  async get(){
+    const q='?ref='+encodeURIComponent(this.cfg.branch);
+    const r=await fetch(this.url()+q,{headers:this.h(),cache:'no-store'});
+    if(r.status===404)return {missing:true};
+    if(!r.ok)throw await ghErr(r);
+    const j=await r.json();let text;
+    if(j.encoding==='base64'&&j.content)text=b64dec(j.content);
+    else{const r2=await fetch(this.url()+q,{headers:this.h('application/vnd.github.raw+json'),cache:'no-store'});if(!r2.ok)throw await ghErr(r2);text=await r2.text()}
+    return {data:normalize(JSON.parse(text)),sha:j.sha}},
+  async put(data,sha,message){
+    const body={message,content:b64enc(JSON.stringify(data,null,1)+'\n'),branch:this.cfg.branch};if(sha)body.sha=sha;
+    const r=await fetch(this.url(),{method:'PUT',headers:Object.assign(this.h(),{'Content-Type':'application/json'}),body:JSON.stringify(body)});
+    if(!r.ok)throw await ghErr(r);return (await r.json()).content.sha}
+};
+async function ghErr(r){let m='';try{m=(await r.json()).message||''}catch(e){}const e=new Error(m||('HTTP '+r.status));e.status=r.status;return e}
+const cfgKey=c=>c?[c.owner,c.repo,c.branch,c.path].join('/'):'';
+
+const Sync={mode:'none',sha:null,base:null,status:'none',msg:'',lastAt:'',pending:false,pushing:false,again:false,timer:null,acts:[],
+  cache(){ls.set(CACHE_KEY,{key:cfgKey(GH.cfg),D,base:this.base,sha:this.sha,dirty:this.pending})},
+  changed(act){
+    if(this.mode==='preview'){ls.set(PREVIEW_KEY,D);this.status='local';this.lastAt=nowHM();paintSync();return}
+    if(this.mode!=='github')return;
+    this.pending=true;if(act&&!this.acts.includes(act))this.acts.push(act);
+    this.cache();if(!this.pushing)this.status='dirty';paintSync();
+    clearTimeout(this.timer);this.timer=setTimeout(()=>this.push(),1500)},
+  async push(){
+    if(this.mode!=='github')return;
+    if(this.pushing){this.again=true;return}
+    if(!this.pending){this.status='ok';paintSync();return}
+    clearTimeout(this.timer);this.pushing=true;this.status='saving';paintSync();
+    const acts=this.acts.splice(0);const msg='plans: '+(acts.slice(0,4).join('、')||'更新');
+    try{
+      for(let attempt=0;;attempt++){
+        const snap=clone(D);
+        try{const sha=await GH.put(snap,this.sha,msg);this.sha=sha;this.base=snap;this.pending=!same(D,snap);
+          this.status=this.pending?'dirty':'ok';this.lastAt=nowHM();this.cache();break}
+        catch(e){
+          if((e.status===409||e.status===422)&&attempt<3){
+            const remote=await GH.get();
+            if(remote.missing){this.sha=null;continue}
+            D=adopt(merge3(this.base,D,remote.data));this.base=remote.data;this.sha=remote.sha;reindex();renderSoft();continue}
+          throw e}
+      }
+    }catch(e){
+      this.acts.unshift(...acts);this.msg=e.message||'';
+      this.status=(e.status===401||e.status===403)?'auth':(navigator.onLine===false||!e.status)?'offline':'error';
+    }finally{this.pushing=false;paintSync();
+      if(this.again){this.again=false;if(this.pending){clearTimeout(this.timer);this.timer=setTimeout(()=>this.push(),800)}}}
+  },
+  async refresh(){
+    if(this.mode!=='github'||this.pushing)return;
+    try{const remote=await GH.get();if(remote.missing||remote.sha===this.sha)return;
+      D=adopt(this.pending?merge3(this.base,D,remote.data):remote.data);this.base=remote.data;this.sha=remote.sha;
+      reindex();this.cache();this.status=this.pending?'dirty':'ok';this.lastAt=nowHM();paintSync();renderSoft();
+      if(this.pending)this.push();
+    }catch(e){}
+  }
+};
+function paintSync(){
+  const b=document.getElementById('sync');const s=Sync.status;b.dataset.s=s;
+  b.textContent={none:'—',local:'本地预览',ok:'已同步 '+Sync.lastAt,dirty:'待保存…',saving:'保存中…',offline:'离线：改动存在本机',auth:'Token 失效',error:'同步出错，点我重试'}[s]||s;
+  b.title=Sync.msg||'';
+}
+
+/* ============================== mutations ============================== */
+function commit(act){reindex();Sync.changed(act);render()}
+/* ticking a box: save now, re-sort a beat later so the check animation is seen before the row slides away
+   (and never while the user is typing somewhere — renderSoft waits for the field to lose focus) */
+let soonT=0;
+function commitSoon(act){reindex();Sync.changed(act);clearTimeout(soonT);soonT=0;if(!Motion.ok()){render();return}soonT=setTimeout(()=>{soonT=0;renderSoft()},420)}
+function setDone(id,on){const t=todoById(id);if(!t)return;t.done=on;
+  if(on){t.doneAt=TODAY_ISO;addLog(t.item,'完成：'+t.t,{auto:true,todo:t.id})}
+  else{t.doneAt='';D.logs=D.logs.filter(l=>!(l.auto&&l.todo===id))}}
+function addTodo(item,t,ddl,wk){const td={id:uid(),item,t,ddl:ddl||'',done:false,created:TODAY_ISO};D.todos.push(td);if(wk)ensureWeek(wk).plan.push(td.id);return td}
+function deleteTodo(id){const t=todoById(id);if(!t)return;
+  const used=Object.values(D.weeks).some(w=>(w.plan||[]).includes(id));
+  if(used)t.del=true;else D.todos=D.todos.filter(x=>x.id!==id);
+  D.logs=D.logs.filter(l=>!(l.auto&&l.todo===id))}
+function nextProjId(){for(let c=65;c<91;c++){const id=String.fromCharCode(c);if(!itemById(id))return id}return 'P'+uid()}
+
+/* ============================== components ============================== */
+/* Layering: every item, group and note is a collapsible "window". Collapsed state lives in U.exp
+   (per device). Bodies are always rendered but hidden, so search can find and open them. */
+const isHidden=k=>!!(D.hidden&&D.hidden[k]);
+const isOpen=(k,def)=>k in U.exp?!!U.exp[k]:!!def;
+const hasContent=h=>/<(input|textarea|select|button)\b/.test(h)||h.replace(/<[^>]+>/g,'').trim()!=='';
+const AREA_TAB={research:['research',''],exp:['exp',''],intern:['exp',''],visit:['exp',''],admin:['admin',''],career:['dim',''],profile:['dim',''],expo:['dim',''],net:['dim',''],talk:['dim',''],service:['dim',''],step:['think','full']};
+const plain=s=>String(s||'').replace(/\*\*/g,'');
+function stSel(it){const v=st(it);const opts=SETS[setOf(it)];return `<select class="pill st" data-act="st" data-id="${esc(it.id)}" aria-label="状态：${esc(it.title)}">${(opts.includes(v)?opts:[v,...opts]).map(k=>`<option${k===v?' selected':''}>${esc(k)}</option>`).join('')}</select>`}
+function dueBadge(t){if(t.done||!t.ddl)return '';const n=daysTo(t.ddl);if(n===null)return '';
+  if(n<0)return `<span class="due over">逾期 ${-n} 天</span>`;if(n===0)return `<span class="due over">今天</span>`;
+  return `<span class="due ${n<=7?'soon':'later'}">${n<=7?'还剩 '+n+' 天':mdShort(t.ddl)}</span>`}
+function itemChip(it){const [tab,sub]=tabFor(it);return `<button class="ichip" type="button" data-act="goto" data-tab="${tab}" data-sub="${sub}" data-target="it-${esc(it.id)}" title="${esc(label(it))}">${esc(label(it))}</button>`}
+function wkBtn(t,wk){const on=inWeek(t.id,wk);return `<button type="button" class="wkb${on?' on':''}" data-act="wk-toggle" data-id="${esc(t.id)}" data-v="${wk}" aria-pressed="${on}" title="${on?'从这周计划移除':'加入这周计划'}">${on?(wk===CUR_WK?'本周':'已排'):'+本周'}</button>`}
+function todoLine(t,ctx,o={}){
+  const it=itemById(t.item);const cid=`cb-${ctx}-${t.id}`;const wk=o.wk||CUR_WK;
+  const ddl=o.noDdl?'':(t.ddl||T.ddlOpen[t.id])?`<input type="date" id="dd-${ctx}-${t.id}" class="ddl" data-act="ddl" data-id="${esc(t.id)}" value="${esc(t.ddl||'')}" aria-label="DDL：${esc(t.t)}">`:(t.done?'':`<button type="button" class="wkb" data-act="ddl-open" data-id="${esc(t.id)}" data-v="${ctx}">DDL</button>`);
+  const inW=!o.noWeek&&!t.del&&inWeek(t.id,wk);const foc=o.focus&&isFocus(wk,t.id);
+  return `<div class="td${t.done?' done':''}${foc?' focus':''}"${o.find?' data-find':''}>
+    <input type="checkbox" id="${cid}" data-act="done" data-id="${esc(t.id)}"${t.done?' checked':''} aria-label="完成：${esc(t.t)}">
+    ${T.editTodo===ctx+':'+t.id?`<form class="td-edit" data-form="todo-edit"><input class="field" id="te-${ctx}-${t.id}" name="t" value="${esc(t.t)}" aria-label="修改 To-Do" data-edit="todo" data-key="${ctx}:${esc(t.id)}" data-id="${esc(t.id)}" autocomplete="off"></form>`
+      :`<button type="button" class="td-t" data-act="todo-edit" data-id="${esc(t.id)}" data-v="${ctx}" title="点击修改">${md(t.t)}${t.del?' <span class="tag">已删除</span>':''}</button>`}
+    ${o.chip&&it?itemChip(it):''}${dueBadge(t)}${inW?wkBtn(t,wk):''}${foc?focBtn(t.id,wk,true):''}${o.focus?'':focTag(t.id)}
+    <span class="act">${o.focus&&!foc&&!t.done?focBtn(t.id,wk,false):''}${ddl}${o.noWeek||t.del||inW||t.done?'':wkBtn(t,wk)}${o.remove?`<button class="x" type="button" data-act="wk-remove" data-id="${esc(t.id)}" data-v="${o.wk}" aria-label="移出这周计划" title="移出这周">−</button>`:''}${t.done||t.del?'':`<button type="button" class="wkb" data-act="to-weekly" data-id="${esc(t.id)}" title="改成每周任务">↻每周</button>`}${o.noDel||t.del?'':`<button class="x" type="button" data-act="todo-del" data-id="${esc(t.id)}" aria-label="删除 To-Do：${esc(t.t)}">×</button>`}</span><button class="more" type="button" data-act="more" aria-label="更多操作">⋯</button>
+  </div>`}
+/* weekly tasks: belong to an item, show up every week, done state kept per week */
+const isFocus=(wk,id)=>!!(D.weeks[wk]&&D.weeks[wk].focus&&D.weeks[wk].focus[id])&&(!todoById(id)||inWeek(id,wk));
+const focBtn=(id,wk,on)=>`<button type="button" class="wkb foc${on?' on':''}" data-act="focus" data-id="${esc(id)}" data-v="${wk}" aria-pressed="${on}" title="${on?'取消这周重点':'设为这周重点'}">${on?'重点':'设为重点'}</button>`;
+const focTag=id=>isFocus(CUR_WK,id)?'<span class="tag foc">本周重点</span>':'';
+const byDdl=(a,b)=>{const x=a.ddl||'9999',y=b.ddl||'9999';return x<y?-1:x>y?1:0};
+const recOn=(wk,id)=>!!(D.weeks[wk]&&D.weeks[wk].rec&&D.weeks[wk].rec[id]);
+const weeklyFor=wk=>{const end=weekRange(wk)[1];return D.items.flatMap(it=>(it.weekly||[]).filter(w=>!w.created||w.created<=end).map(w=>({it,w})))};
+function weeklyLine(it,w,ctx,o={}){const wk=o.wk||CUR_WK;const on=recOn(wk,w.id);const cid=`wr-${ctx}-${w.id}`;const foc=o.focus&&isFocus(wk,w.id);
+  return `<div class="td${on?' done':''}${foc?' focus':''}"${o.find?' data-find':''}>
+    <input type="checkbox" id="${cid}" data-act="rec" data-id="${esc(w.id)}" data-item="${esc(it.id)}" data-v="${wk}"${on?' checked':''} aria-label="这周完成：${esc(w.t)}">
+    ${T.editTodo===ctx+':'+w.id?`<form class="td-edit" data-form="todo-edit"><input class="field" id="te-${ctx}-${w.id}" name="t" value="${esc(w.t)}" aria-label="修改每周任务" data-edit="wkly" data-key="${ctx}:${esc(w.id)}" data-id="${esc(w.id)}" data-item="${esc(it.id)}" autocomplete="off"></form>`
+      :`<button type="button" class="td-t" data-act="todo-edit" data-id="${esc(w.id)}" data-v="${ctx}" title="点击修改">${md(w.t)}</button>`}
+    ${o.chip?itemChip(it):''}<span class="tag rep" title="每周自动出现">每周</span>${foc?focBtn(w.id,wk,true):''}${o.focus?'':focTag(w.id)}
+    <span class="act">${o.focus&&!foc&&!on?focBtn(w.id,wk,false):''}<button type="button" class="wkb" data-act="to-once" data-id="${esc(w.id)}" data-item="${esc(it.id)}" title="改成一次性 To-Do（放进本周）">改为一次</button>${o.noDel?'':`<button class="x" type="button" data-act="wkly-del" data-id="${esc(w.id)}" data-item="${esc(it.id)}" aria-label="删除每周任务：${esc(w.t)}">×</button>`}</span><button class="more" type="button" data-act="more" aria-label="更多操作">⋯</button>
+  </div>`}
+function todoAdd(it){return `<form class="add slim" data-form="todo-add" data-item="${esc(it.id)}">
+    <input type="text" class="field" id="add-t-${esc(it.id)}" name="t" placeholder="+ 添加 To-Do" aria-label="新 To-Do" required>
+    <input type="date" class="field" id="add-d-${esc(it.id)}" name="d" aria-label="DDL（可选）">
+    <label class="rep-l" title="每周自动出现一次，每周单独打勾"><input type="checkbox" name="rep" id="add-r-${esc(it.id)}"> 每周</label>
+    <button class="btn sm" type="submit">添加</button></form>`}
+function logPart(it){
+  const logs=D.logs.filter(l=>l.item===it.id).sort((a,b)=>a.d<b.d?1:a.d>b.d?-1:0);const k='log:'+it.id;const open=isOpen(k);
+  return `<div class="sub-x${open?' open':''}" data-key="${k}">
+    <div class="it-row"><button class="mini-h" type="button" data-act="exp" data-id="${k}" aria-expanded="${open}"><span class="car"></span>进展记录 <span class="cnt">${logs.length||''}</span></button>
+      ${!open&&logs[0]?`<span class="lastlog"><span class="d">${esc(mdShort(logs[0].d))}</span>${md(logs[0].t)}</span>`:''}</div>
+    <div class="xb"${open?'':' hidden'}>
+      <form class="add slim" data-form="log-add" data-item="${esc(it.id)}">
+        <input type="date" class="field" name="d" id="log-d-${esc(it.id)}" value="${TODAY_ISO}" aria-label="日期">
+        <input type="text" class="field" name="t" id="log-t-${esc(it.id)}" placeholder="推进了什么、卡在哪、下一步" aria-label="进展" required>
+        <button class="btn sm" type="submit">记录</button></form>
+      <div class="log">${logs.map(l=>`<div class="log-e${l.auto?' auto':''}" data-find><span class="d">${esc(l.d)}</span><span class="t">${md(l.t)}</span><button class="x" type="button" data-act="log-del" data-id="${esc(l.id)}" aria-label="删除这条进展">×</button></div>`).join('')}</div>
+    </div></div>`}
+function itemEdit(it){
+  return `<form class="edit" data-form="item-edit" data-id="${esc(it.id)}">
+    <label>名称<input class="field" name="title" id="ie-title-${esc(it.id)}" value="${esc(it.title)}" required></label>
+    ${it.kind==='proj'?`<label>目标会议 / 期刊<input class="field" name="target" id="ie-target-${esc(it.id)}" value="${esc(it.target||'')}"></label>
+      <label>人员（每行一条）<textarea class="field" name="people" id="ie-people-${esc(it.id)}">${esc(it.people||'')}</textarea></label>
+      <label>笔记（「- 」开头为列表）<textarea class="field code" name="notes" id="ie-notes-${esc(it.id)}">${esc(it.notes||'')}</textarea></label>`
+    :`<label>说明<textarea class="field" name="sub" id="ie-sub-${esc(it.id)}">${esc(it.sub||'')}</textarea></label>`}
+    <div class="btnrow"><button class="btn" type="submit">保存</button><button class="btn ghost" type="button" data-act="item-edit-cancel">取消</button></div>
+  </form>`}
+/* one tracked item: a single line when collapsed */
+function itemView(it,o={}){
+  const id=esc(it.id);
+  if(T.editItem===it.id)return `<div class="it open" id="it-${id}"><div class="xb">${itemEdit(it)}</div></div>`;
+  const todos=todosOf(it);const openT=todos.filter(t=>!t.done);const wkly=it.weekly||[];const wOpen=wkly.filter(w=>!recOn(CUR_WK,w.id)).length;
+  const next=openT.filter(t=>t.ddl).sort((a,b)=>a.ddl<b.ddl?-1:1)[0];
+  const exp=isOpen(it.id);const proj=it.kind==='proj';
+  const stu=studentsOf(it);
+  const body=(stu.length?`<div class="meta" data-find>学生：${esc(stu.join('、'))}</div>`:'')+(proj?`${(it.people||'').split('\n').filter(Boolean).map(l=>`<div class="meta" data-find>${md(l)}</div>`).join('')}${it.notes?`<div class="notes">${renderText(it.notes)}</div>`:''}`
+    :(it.sub?`<div class="row-sub">${renderText(it.sub)}</div>`:''));
+  return `<div class="it${exp?' open':''}${proj?' proj':''}" id="it-${id}" data-key="${id}">
+    <div class="it-row">
+      <button class="it-h" type="button" data-act="exp" data-id="${id}" aria-expanded="${exp}"><span class="car"></span>${proj?`<span class="proj-id">${id}</span>`:''}<span class="it-t" data-find>${esc(it.title)}</span>${proj&&it.target?`<span class="tgt">${esc(it.target)}</span>`:''}</button>
+      <span class="it-meta">${it.kind==='person'?ageBadge(it.last,30,90):''}${openT.length+wOpen?`<span>${openT.length+wOpen} 项</span>`:''}${next?dueBadge(next):''}</span>
+      ${o.noEdit?'':`<button class="pen" type="button" data-act="item-edit" data-id="${id}" aria-label="编辑：${esc(it.title)}" title="编辑">✎</button>`}${o.star?`<button class="star${it.sel?' on':''}" type="button" data-act="sel" data-id="${id}" aria-pressed="${!!it.sel}" title="${it.sel?'取消 Selected':'标为 Selected'}">${it.sel?'★':'☆'}</button>`:''}${o.noStatus?'':stSel(it)}
+    </div>
+    <div class="xb"${exp?'':' hidden'}>
+      ${body}
+      <div class="todos">${[false,true].map(fin=>wkly.filter(w=>recOn(CUR_WK,w.id)===fin).map(w=>weeklyLine(it,w,it.area)).join('')+todos.filter(t=>!!t.done===fin).sort(byDdl).map(t=>todoLine(t,it.area,{})).join('')).join('')}</div>
+      ${todoAdd(it)}
+      ${it.kind==='person'?`<div class="row-foot"><button class="btn ghost sm" type="button" data-act="met" data-id="${id}">今天联系了</button><span class="small muted">上次联系</span><input type="date" class="ddl" id="last-${id}" data-act="last" data-id="${id}" value="${esc(it.last||'')}" aria-label="上次联系日期"></div>`:''}
+      ${logPart(it)}
+      ${o.extra||''}
+      ${o.noEdit?'':`<div class="row-foot"><button class="linkbtn muted" type="button" data-act="item-edit" data-id="${id}">编辑</button><button class="linkbtn danger" type="button" data-act="item-del" data-id="${id}">删除</button></div>`}
+    </div>
+  </div>`}
+function addForm(area,kind,ph){
+  const key=area+'|'+kind;if(T.adding!==key)return '';
+  return `<form class="edit" data-form="item-add" data-area="${area}" data-kind="${kind}">
+    <label>名称<input class="field" name="title" id="na-title-${key}" placeholder="${esc(ph||'')}" required></label>
+    <label>${kind==='proj'?'目标会议 / 期刊':'说明（可选）'}<input class="field" name="sub" id="na-sub-${key}"></label>
+    <div class="btnrow"><button class="btn" type="submit">添加</button><button class="btn ghost" type="button" data-act="add-cancel">取消</button></div>
+  </form>`}
+const addBtn=(area,kind,txt)=>`<button class="btn ghost sm" type="button" data-act="add-open" data-v="${area}|${kind}">${txt}</button>`;
+function itemList(list,area,kind,ph,o){return `${addForm(area,kind,ph)}${list.length?`<div class="list-i">${list.map(it=>itemView(it,o)).join('')}</div>`:''}`}
+/* Selected / 全部 switch for a project list */
+function selList(key,list,area,kind,ph){
+  const anySel=list.some(it=>it.sel);const view=U.selView[key]||(anySel?'sel':'all');
+  const shown=view==='sel'?list.filter(it=>it.sel):list;
+  return {switch:filterChips('selview:'+key,view,[['sel','Selected'],['all','全部']]),
+    body:itemList(shown,area,kind,ph,{star:true})+(view==='sel'&&!shown.length?'<p class="blank">还没有 Selected 的项目，切到「全部」点 ☆ 标记。</p>':'')}}
+/* a collapsible group with a heading; o.hide makes it deletable */
+function group(key,title,body,o={}){
+  if(o.hide&&isHidden(o.hide))return '';
+  if(!hasContent(body))return '';
+  const open=isOpen(key,!o.closed);
+  return `<section class="grp-s${open?' open':''}" data-key="${key}"${o.id?` id="${o.id}"`:''}>
+    <div class="grp-hd"><button class="grp-btn" type="button" data-act="exp" data-id="${key}" data-def="${o.closed?0:1}" aria-expanded="${open}"><span class="car"></span><h2>${title}</h2>${o.count!=null?`<span class="cnt">${o.count}</span>`:''}</button>
+      <div class="aside">${o.aside||''}${o.hide?`<button class="wx" type="button" data-act="hide" data-id="${esc(o.hide)}" data-v="${esc(plain(title))}" aria-label="删除：${esc(plain(title))}" title="删除这个窗口">×</button>`:''}</div></div>
+    <div class="xb"${open?'':' hidden'}>${body}</div></section>`}
+function blockBody(id,b){
+  if(b.type==='checks')return String(b.text||'').split('\n').filter(s=>s.trim()).map(s=>{const k='blk:'+id+':'+hash(s.trim());const on=!!D.checks[k];
+    return `<label class="lc${on?' done':''}" data-find><input type="checkbox" data-act="check" data-id="${k}"${on?' checked':''}><span>${md(s.trim())}</span></label>`}).join('');
+  if(b.type==='formula'){const cells=[],notes=[];
+    for(const s of String(b.text||'').split('\n').filter(x=>x.trim())){const m=/^\s*(\d+)\s*\|\s*([^|]*)\|?\s*(.*)$/.exec(s);if(m)cells.push(m);else notes.push(s)}
+    return `<div class="formula">${cells.map(m=>`<div class="fx" data-find><b>${esc(m[1])}</b><span>${md(m[2].trim())}</span><small>${md(m[3])}</small></div>`).join('')}</div>${notes.map(n=>`<p class="para small muted" data-find>${md(n)}</p>`).join('')}`}
+  return renderText(b.text)}
+/* a note (text block) as a collapsible card */
+function note(id,o={}){
+  const b=D.blocks[id];if(!b||isHidden('blk:'+id))return '';
+  if(T.editBlock===id)return `<div class="it open"><div class="xb"><form class="edit" data-form="blk" data-id="${id}">
+    <label>标题<input class="field" name="title" id="blk-title-${id}" value="${esc(b.title)}"></label>
+    <label>内容<textarea class="field code" name="text" id="blk-text-${id}" rows="${Math.min(22,Math.max(5,(b.text||'').split('\n').length+2))}">${esc(b.text)}</textarea></label>
+    <p class="hint">${b.type==='checks'?'每行一项。':b.type==='formula'?'「数字 | 标题 | 说明」一行一格，其余行是备注。':'「- 」开头是列表，「  - 」是子项，「=> a → b」画成链条。**加粗**，[文字](链接)。'}</p>
+    <div class="btnrow"><button class="btn" type="submit">保存</button><button class="btn ghost" type="button" data-act="blk-cancel">取消</button></div></form></div></div>`;
+  const k='blk:'+id;const open=isOpen(k,o.open);
+  return `<div class="it note${open?' open':''}" id="b-${id}" data-key="${k}">
+    <div class="it-row"><button class="it-h" type="button" data-act="exp" data-id="${k}" data-def="${o.open?1:0}" aria-expanded="${open}"><span class="car"></span><span class="it-t" data-find>${esc(b.title)}</span>${b.badge?`<span class="rank">${esc(b.badge)}</span>`:''}</button><button class="pen" type="button" data-act="blk-edit" data-id="${id}" aria-label="编辑：${esc(b.title)}" title="编辑">✎</button></div>
+    <div class="xb"${open?'':' hidden'}>${blockBody(id,b)||'<p class="blank">空。</p>'}
+      <div class="row-foot"><button class="linkbtn muted" type="button" data-act="blk-edit" data-id="${id}">编辑</button><button class="linkbtn danger" type="button" data-act="hide" data-id="${k}" data-v="${esc(b.title)}">删除</button></div></div>
+  </div>`}
+const notes=(ids,o)=>{const h=ids.map(id=>note(id,o)).join('');return h?`<div class="list-i">${h}</div>`:''};
+function filterChips(act,cur,opts){return `<div class="chips" role="group">${opts.map(([k,l])=>`<button class="chipbtn" type="button" data-act="${act}" data-v="${esc(k)}" aria-pressed="${cur===k}">${esc(l)}</button>`).join('')}</div>`}
+function convCard(c,items){
+  if(T.editConv===c.id)return convForm(c);
+  return `<article class="conv box"><header class="conv-h"><span class="who">${esc(c.who)}</span>${c.date?`<span class="date">${esc(c.date)}</span>`:''}
+    <span style="margin-left:auto;display:flex;gap:10px;align-items:center"><button class="linkbtn muted" type="button" data-act="conv-edit" data-id="${esc(c.id)}">编辑</button><button class="linkbtn danger" type="button" data-act="conv-del" data-id="${esc(c.id)}">删除</button></span></header>
+  <ul class="list">${items.map(x=>`<li data-find>${md(x.t)}${x.sub&&x.sub.length?`<ul class="list">${x.sub.map(s=>`<li>${md(s)}</li>`).join('')}</ul>`:''}</li>`).join('')}</ul></article>`}
+function convToText(c){return (c.items||[]).map(x=>`- ${x.t}${(x.tags||[]).map(t=>' #'+(TAGS[t]||t)).join('')}`+((x.sub||[]).map(s=>`\n  - ${s}`).join(''))).join('\n')}
+function textToConvItems(text){const out=[];
+  for(const raw of String(text||'').split('\n')){if(!raw.trim())continue;
+    const m=/^(\s*)[-*]?\s*(.*)$/.exec(raw);const sub=m[1].length>=2&&out.length;let t=m[2];
+    if(sub){out[out.length-1].sub.push(t.trim());continue}
+    const tags=[];t=t.replace(/#(\S+)/g,(all,g)=>{const c=TAGCODE[g.toLowerCase()]||TAGCODE[g];if(c){if(!tags.includes(c))tags.push(c);return ''}return all}).trim();
+    out.push({t,sub:[],tags})}
+  return out}
+function convForm(c){const isNew=!c;c=c||{id:'new',who:'',date:'',items:[]};
+  return `<form class="edit conv" data-form="conv" data-id="${esc(c.id)}">
+    <label>和谁<input class="field" name="who" id="cv-who-${esc(c.id)}" value="${esc(c.who)}" required></label>
+    <label>日期（如 10.22）<input class="field" name="date" id="cv-date-${esc(c.id)}" value="${esc(c.date)}"></label>
+    <label>要点（每行一条；两个空格开头是子项；行尾可加 #研究 #实习 #职业 等标签，用来筛选）<textarea class="field code" name="text" id="cv-text-${esc(c.id)}" rows="7">${esc(convToText(c))}</textarea></label>
+    <div class="btnrow"><button class="btn" type="submit">${isNew?'添加':'保存'}</button><button class="btn ghost" type="button" data-act="conv-cancel">取消</button></div></form>`}
+function ageBadge(date,ok,warn){const n=date?-daysTo(date):null;const cls=n===null?'na':n<=ok?'ok':n<=warn?'warn':'bad';return `<span class="age ${cls}">${n===null?'未记录':n===0?'今天':n+' 天前'}</span>`}
+function freshRow(c){
+  return `<div class="fr" data-find><div class="fr-t">${esc(c.title)}${c.note?`<small>${md(c.note)}</small>`:''}</div>${ageBadge(c.date,30,90)}
+    <span class="act"><input type="date" class="ddl" id="ch-${esc(c.id)}" data-act="ch-date" data-id="${esc(c.id)}" value="${esc(c.date||'')}" aria-label="${esc(c.title)} 上次更新日期"></span>
+    <button class="linkbtn" type="button" data-act="ch-today" data-id="${esc(c.id)}">今天更新了</button></div>`}
+const pageHead=(title,aside)=>`<div class="page-h"><h1>${title}</h1>${aside?`<div class="aside">${aside}</div>`:''}</div>`;
+
+/* ============================== panels ============================== */
+function renderWeek(){
+  const wk=U.week||CUR_WK;const W=week(wk);const [mon,sun]=weekRange(wk);
+  const isCur=wk===CUR_WK,isPast=wk<CUR_WK;
+  const plan=planIds(wk).map(todoById).filter(Boolean);
+  const allW=weeklyFor(wk);const openW=allW.filter(x=>!recOn(wk,x.w.id)),doneW=allW.filter(x=>recOn(wk,x.w.id));
+  const done=plan.filter(t=>t.done).length+doneW.length,total=plan.length+allW.length;
+  const openPlan=plan.filter(t=>!t.done),donePlan=plan.filter(t=>t.done);
+  const byArea={};const slot=(it,iid)=>{const a=it?secOf(it.area):'other';const A=byArea[a]=byArea[a]||{};return A[iid]=A[iid]||{w:[],t:[]}};
+  for(const x of allW)slot(x.it,x.it.id).w.push(x.w);
+  for(const t of plan)slot(itemById(t.item),t.item).t.push(t);
+  const AREA_C={research:'research',exp:'exp',dim:'dim',admin:'admin'};
+  const planHtml=[...SECTIONS.map(x=>x[0]),'other'].filter(a=>byArea[a]).map(a=>{const groups=Object.entries(byArea[a]);
+    let tot=0,dn=0;for(const [,g] of groups){tot+=g.w.length+g.t.length;dn+=g.w.filter(w=>recOn(wk,w.id)).length+g.t.filter(t=>t.done).length}
+    return `<section class="box wk-area" data-c="${AREA_C[a]||'think'}"><div class="wk-area-h"><span class="dot" aria-hidden="true"></span><h2>${SECNAME[a]||'其他'}</h2><span class="cnt">${dn}/${tot}</span></div>${
+    groups.map(([iid,g])=>{const it=itemById(iid);const [tab,sub]=it?tabFor(it):['week',''];
+      return `<div class="wk-it">${it?`<button class="wk-it-h" type="button" data-act="goto" data-tab="${tab}" data-sub="${sub}" data-target="it-${esc(it.id)}">${it.kind==='proj'?`<span class="proj-id">${esc(it.id)}</span>`:''}<span>${esc(it.kind==='promo'?label(it):it.title)}</span></button>`:'<span class="wk-it-h">已删除的条目</span>'}<div class="todos">${[false,true].map(fin=>g.w.filter(w=>recOn(wk,w.id)===fin).map(w=>weeklyLine(it,w,'wk',{wk,noDel:true,find:true,focus:true})).join('')+g.t.filter(t=>!!t.done===fin).sort(byDdl).map(t=>todoLine(t,'wk',{wk,remove:true,noWeek:true,noDel:true,find:true,focus:true})).join('')).join('')}</div></div>`}).join('')}</section>`}).join('');
+  const prev=addWeeks(wk,-1);const carry=planIds(prev).map(todoById).filter(t=>t&&!t.done&&!t.del&&!inWeek(t.id,wk));
+  const open=liveTodos().filter(t=>!t.done&&!inWeek(t.id,wk));
+  const pickList=open.filter(t=>!U.pickArea||secOf(itemById(t.item).area)===U.pickArea);
+  const pickLine=t=>`<div class="td"><span class="td-t">${md(t.t)}</span>${itemChip(itemById(t.item))}${dueBadge(t)}<button class="btn ghost sm" type="button" data-act="wk-add" data-id="${esc(t.id)}" data-v="${wk}">加入</button></div>`;
+  const upcoming=liveTodos().filter(t=>!t.done&&t.ddl&&daysTo(t.ddl)<=14&&!inWeek(t.id,wk)).sort((a,b)=>a.ddl<b.ddl?-1:1);
+  const doneThisWeek=[...liveTodos().filter(t=>t.done&&t.doneAt&&t.doneAt>=mon&&t.doneAt<=sun),...doneW.map(x=>({t:x.w.t,doneAt:typeof W.rec[x.w.id]==='string'?W.rec[x.w.id]:mon,item:x.it.id}))];
+  const logsThisWeek=D.logs.filter(l=>!l.auto&&l.d>=mon&&l.d<=sun&&itemById(l.item));
+  const others=Object.keys(D.weeks).filter(k=>k!==wk).sort().reverse();
+  const quick=`<form class="add slim" data-form="wk-quick" data-wk="${wk}">
+      <select class="field" id="wkq-item" name="item" aria-label="属于哪个条目">${SECTIONS.map(([a,nm])=>{const its=secItems(a);return its.length?`<optgroup label="${nm}">${its.map(it=>`<option value="${esc(it.id)}"${it.id===U.lastItem?' selected':''}>${esc(label(it))}</option>`).join('')}</optgroup>`:''}).join('')}</select>
+      <input type="text" class="field" id="wkq-t" name="t" placeholder="+ 新建 To-Do 放进这周" required aria-label="新 To-Do">
+      <input type="date" class="field" id="wkq-d" name="d" aria-label="DDL（可选）">
+      <label class="rep-l" title="每周自动出现一次"><input type="checkbox" name="rep" id="wkq-r"> 每周</label>
+      <button class="btn sm" type="submit">添加</button></form>`;
+  return `
+  <div class="wknav">
+    <button class="btn ghost sm" type="button" data-act="wk-go" data-v="${prev}" aria-label="上周">←</button>
+    <h1 class="wklabel">${isCur?'本周':isPast?'往期':'未来'} <span>${wk.slice(5)} · ${mdShort(mon)}–${mdShort(sun)}</span></h1>
+    <button class="btn ghost sm" type="button" data-act="wk-go" data-v="${addWeeks(wk,1)}" aria-label="下周">→</button>
+    ${isCur?'':`<button class="btn sm" type="button" data-act="wk-go" data-v="${CUR_WK}">回到本周</button>`}
+  </div>
+  <div class="wkgrid">
+    <div class="stack">
+      <textarea class="field goal" id="wk-goals" data-wk="${wk}" data-field="goals" placeholder="这周最重要的事…" rows="2" aria-label="这周目标">${esc(W.goals||'')}</textarea>
+      <div class="plan-sum">
+        <div class="meter"><span>本周完成 ${done}/${total}</span><div class="bar"><i style="width:${total?Math.round(done/total*100):0}%"></i></div></div>
+        ${carry.length?`<button class="linkbtn" type="button" data-act="wk-carry" data-v="${wk}" title="只挪普通待办（还是同一条，不会新建）；每周任务本来就会自动出现">把上周没完成的 ${carry.length} 项移过来</button>`:''}
+      </div>
+      <div class="plan">${planHtml||'<p class="blank">这周还没有计划。</p>'}</div>
+
+
+
+
+    </div>
+    <aside class="stack">
+      <section class="box quick-box">${quick}</section>
+
+      ${upcoming.length?`<section class="box"><h2 class="h-sm">接下来两周到期</h2><div class="todos">${upcoming.map(t=>todoLine(t,'up',{chip:true,noDel:true,find:true})).join('')}</div></section>`:''}
+      ${doneThisWeek.length+logsThisWeek.length===0?'':group('wk-done','这周完成',`<div class="log">${[...doneThisWeek.map(t=>({d:t.doneAt,t:'✓ '+t.t,it:itemById(t.item)})),...logsThisWeek.map(l=>({d:l.d,t:l.t,it:itemById(l.item)}))].sort((a,b)=>a.d<b.d?1:-1).map(e=>`<div class="log-e"><span class="d">${esc(mdShort(e.d))}</span><span class="t">${md(e.t)}</span><span>${e.it?itemChip(e.it):''}</span></div>`).join('')||'<p class="blank">还没有。</p>'}</div>`,{closed:true,count:doneThisWeek.length+logsThisWeek.length})}
+      ${open.length===0?'':group('wk-pick',`从各分区挑选`,`${filterChips('pick-area',U.pickArea,[['','全部'],...SECTIONS])}<div class="todos">${pickList.map(pickLine).join('')||'<p class="blank">没有可挑选的 To-Do。</p>'}</div>`,{closed:true,count:open.length})}
+      ${group('wk-review','复盘',`<textarea class="field" id="wk-review" data-wk="${wk}" data-field="review" placeholder="做得好的、没做完的原因、下周要调整的…" rows="4">${esc(W.review||'')}</textarea>`,{closed:!W.review})}
+      ${others.length?group('wk-hist','往期周计划',`<div class="hist">${others.map(k=>{const w=week(k);const p=planIds(k).map(todoById).filter(Boolean);const kw=weeklyFor(k);const d=p.filter(t=>t.done).length+kw.filter(x=>recOn(k,x.w.id)).length;const pt=p.length+kw.length;const [m,s]=weekRange(k);
+        return `<button type="button" data-act="wk-go" data-v="${k}"><span class="w">${k.slice(5)}<small>${mdShort(m)}–${mdShort(s)}</small></span><span class="g">${esc((w.goals||w.review||'').split('\n')[0]||'—')}</span><span class="s">完成 ${d}/${pt}</span></button>`}).join('')}</div>`,{closed:true,count:others.length}):''}
+    </aside>
+  </div>`;
+}
+
+/* students: who works on which project */
+const studentsOf=it=>(D.students||[]).filter(s=>(s.projects||[]).includes(it.id)).map(s=>s.name);
+function studentsSection(){
+  const projs=areaItems('research','proj'),parts=areaItems('research','collab');const list=D.students||[];
+  const row=s=>{
+    if(T.editStudent===s.id)return `<div class="stu"><form class="edit" data-form="student" data-id="${esc(s.id)}">
+      <label>名字<input class="field" name="name" id="stu-name-${esc(s.id)}" value="${esc(s.name)}" required></label>
+      <label>备注<input class="field" name="note" id="stu-note-${esc(s.id)}" value="${esc(s.note||'')}"></label>
+      <div class="btnrow"><button class="btn" type="submit">保存</button><button class="btn ghost" type="button" data-act="student-cancel">取消</button></div></form></div>`;
+    const mine=s.projects||[];
+    const lead=projs.map(p=>{const on=mine.includes(p.id);return `<button type="button" class="pchip${on?' on':''}" data-act="stu-proj" data-id="${esc(s.id)}" data-v="${esc(p.id)}" aria-pressed="${on}" title="${esc(label(p))}">${esc(p.id)}</button>`}).join('');
+    const partOn=parts.filter(p=>mine.includes(p.id)).map(p=>`<button type="button" class="pchip on wide" data-act="stu-proj" data-id="${esc(s.id)}" data-v="${esc(p.id)}" aria-pressed="true" title="取消分配：${esc(p.title)}">${esc(p.title)} ×</button>`).join('');
+    const avail=parts.filter(p=>!mine.includes(p.id));
+    return `<div class="stu" id="stu-${esc(s.id)}">
+      <div class="stu-h"><span class="stu-n" data-find>${esc(s.name)}</span>
+        <div class="pchips">${lead}${partOn}${avail.length?`<select class="pill" id="stu-add-${esc(s.id)}" data-act="stu-add" data-id="${esc(s.id)}" aria-label="给 ${esc(s.name)} 加合作项目"><option value="">+ 合作项目</option>${avail.map(p=>`<option value="${esc(p.id)}">${esc(p.title)}</option>`).join('')}</select>`:''}</div>
+        <span class="act-r"><button class="pen" type="button" data-act="student-edit" data-id="${esc(s.id)}" aria-label="编辑 ${esc(s.name)}" title="编辑">✎</button><button class="wx" type="button" data-act="student-del" data-id="${esc(s.id)}" aria-label="删除 ${esc(s.name)}" title="删除">×</button></span></div>
+      ${s.note?`<p class="row-sub" data-find>${md(s.note)}</p>`:''}
+    </div>`};
+  const add=T.addingStudent?`<form class="edit" data-form="student-new"><label>名字<input class="field" name="name" id="stu-new" required></label>
+    <div class="btnrow"><button class="btn" type="submit">添加</button><button class="btn ghost" type="button" data-act="student-cancel">取消</button></div></form>`:'';
+  return group('r-stu','学生',`${add}${list.length?`<div class="box stus">${list.map(row).join('')}</div>`:'<p class="blank">还没有学生。</p>'}`,
+    {count:list.length,aside:`<button class="btn ghost sm" type="button" data-act="student-add">+ 添加</button>`})}
+function renderResearch(){
+  const projs=areaItems('research','proj'),cols=areaItems('research','collab');
+  const L=selList('lead',projs,'research','proj','例如：一个新的研究方向'),P=selList('part',cols,'research','collab','例如：某合作');
+  return `<div class="narrow stack">
+  ${pageHead('科研')}
+  ${group('r-proj','Lead Project',L.body||'<p class="blank">还没有。</p>',{count:projs.length,aside:L.switch+addBtn('research','proj','+ 添加')})}
+  ${group('r-collab','Participate Project',P.body||'<p class="blank">还没有。</p>',{count:cols.length,aside:P.switch+addBtn('research','collab','+ 添加')})}
+  ${studentsSection()}
+  ${group('r-ref','资料',notes(['hero','students','bottomline','authorship']),{closed:true})}
+  </div>`}
+function renderExp(){const its=areaItems('exp');return `<div class="narrow stack">
+  ${pageHead('经历',addBtn('exp','intern','+ 添加'))}
+  ${itemList(its,'exp','intern','例如：某公司实习、某组访问')}
+  ${group('e-ref','资料',notes(['intern_intro','visit_intro','postdoc']),{closed:true})}</div>`}
+function renderAdmin(){
+  const its=areaItems('admin');
+
+  return `<div class="narrow stack">
+  ${pageHead('杂事',addBtn('admin','todo','+ 杂事'))}
+  ${itemList(its,'admin','todo','例如：组会 slides、报销')}
+  ${group('a-ref','资料',notes(['dim_teaching']),{closed:true})}</div>`}
+
+/* 维度: the long-term assets besides papers — people, talks, visibility, service, funding */
+const PROMO_ST=['Maintaining','Submitting','In submission'];
+/* per-paper promotion checklist: only for papers that are out (Maintaining) or under review (Submitting) */
+function itemTodos(it,ctx,wk){wk=wk||CUR_WK;const wkly=it.weekly||[],todos=todosOf(it);
+  return [false,true].map(fin=>wkly.filter(w=>recOn(wk,w.id)===fin).map(w=>weeklyLine(it,w,ctx)).join('')+todos.filter(t=>!!t.done===fin).sort(byDdl).map(t=>todoLine(t,ctx,{})).join('')).join('')}
+function promoCard(p){
+  const tpl=D.launchTpl||[];const keys=tpl.flatMap((g,gi)=>g.items.map((_,ii)=>`launch:${p.id}:${gi}:${ii}`));const n=keys.filter(k=>D.checks[k]).length;
+  const k='promo:'+p.id;const open=isOpen(k);const pi=itemById('pr-'+p.id);
+  const nOpen=pi?todosOf(pi).filter(t=>!t.done).length+(pi.weekly||[]).filter(w=>!recOn(CUR_WK,w.id)).length:0;
+  const addForm=pi?todoAdd(pi):`<form class="add slim" data-form="promo-add" data-paper="${esc(p.id)}">
+    <input type="text" class="field" id="add-t-pr-${esc(p.id)}" name="t" placeholder="+ 添加宣传 To-Do" aria-label="新的宣传 To-Do" required>
+    <input type="date" class="field" id="add-d-pr-${esc(p.id)}" name="d" aria-label="DDL（可选）">
+    <label class="rep-l"><input type="checkbox" name="rep" id="add-r-pr-${esc(p.id)}"> 每周</label>
+    <button class="btn sm" type="submit">添加</button></form>`;
+  return `<div class="it${open?' open':''}" id="promo-${esc(p.id)}" data-key="${k}">
+    <div class="it-row"><button class="it-h" type="button" data-act="exp" data-id="${k}" aria-expanded="${open}"><span class="car"></span><span class="proj-id">${esc(p.id)}</span><span class="it-t" data-find>${esc(p.title)}</span><span class="tgt">${esc(st(p))}</span></button>
+      <span class="it-meta">${nOpen?`<span>${nOpen} 项</span>`:''}<span>清单 ${n}/${keys.length}</span></span></div>
+    <div class="xb"${open?'':' hidden'}>
+      <div class="promo-todos"${pi?` id="it-${esc(pi.id)}"`:''}><div class="k">宣传 To-Do</div><div class="todos">${pi?itemTodos(pi,'expo'):''}</div>${addForm}</div>
+      ${tpl.map((g,gi)=>`<div class="grp"><div class="grp-k">${esc(g.g)}</div>${g.items.map((x,ii)=>{const ck=`launch:${p.id}:${gi}:${ii}`;const on=!!D.checks[ck];return `<label class="lc${on?' done':''}"><input type="checkbox" data-act="check" data-id="${ck}"${on?' checked':''}><span>${md(x)}</span></label>`}).join('')}</div>`).join('')}
+    </div>
+  </div>`}
+/* 维度: the long-term assets besides papers — people, talks & reviewing, visibility, funding */
+function renderDim(){
+  const net=areaItems('net'),talk=[...areaItems('talk'),...areaItems('service')],fund=[...areaItems('profile'),...areaItems('career')];
+  const promo=areaItems('research','proj').filter(p=>PROMO_ST.includes(st(p)));
+  const letters=isHidden('w:letters')?'':`<div class="box"><div class="box-h"><h3>推荐信 × 3</h3></div>${[0,1,2].map(i=>`<div class="slot"><b>${i+1}</b><input class="field" id="letter-${i}" data-act="letter" data-id="${i}" value="${esc(D.letters[i]||'')}" aria-label="推荐信 ${i+1}"></div>`).join('')}</div>`;
+  const ops=areaItems('expo').filter(x=>x.kind!=='promo');
+  return `<div class="narrow stack">
+  ${pageHead('维度')}
+  ${group('d-net','人脉 · 圈子',`${letters}${itemList(net,'net','person','例如：某位想认识的老师')}${notes(['connection'])}`,{count:net.length,aside:addBtn('net','person','+ 添加')})}
+  ${group('d-fund','奖项 · Fellowship',itemList(fund,'profile','app','例如：某 fellowship')||'<p class="blank">还没有。</p>',{count:fund.length,aside:addBtn('profile','app','+ 添加')})}
+  ${group('d-expo','曝光',`<div class="box ch-box">${D.channels.map(freshRow).join('')}</div>
+    ${itemList(ops,'expo','todo','例如：公众号运营')}
+    <div class="sub-k">论文宣传 <span class="muted small">只列 Maintaining 和 Submitting 的论文</span></div>
+    ${promo.length?`<div class="list-i">${promo.map(promoCard).join('')}</div>`:'<p class="blank">目前没有 Maintaining 或 Submitting 的论文。</p>'}`,{id:'channels',count:ops.length+promo.length,aside:addBtn('expo','todo','+ 运营条目')})}
+  ${group('d-talk','Talk · Workshop · Reviewer',itemList(talk,'talk','todo','例如：某个 invited talk、workshop、审稿')||'<p class="blank">还没有。</p>',{count:talk.length,aside:addBtn('talk','todo','+ 添加')})}
+  ${noteGroup('d-ref','各维度说明',['ind_big','ind_small','dim_service','dim_teaching','dim_talk','dim_indep','dim_other'])}
+  </div>`}
+const SUBS=[['half','退半步 · 研究规划'],['full','退一步 · 事业规划'],['notes','笔记']];
+const SUB_LEGACY={career:'full',profile:'full',opp:'full',expo:'full',lib:'full',step:'full'};
+const tabFor=it=>it.area==='step'?['think',it.id==='hb'?'half':'full']:(AREA_TAB[it.area]||['week','']);
+function renderThink(){
+  const want=SUB_LEGACY[U.sub]||U.sub;const sub=SUBS.some(s=>s[0]===want)?want:'half';
+  return `<div class="narrow stack">
+  ${pageHead('思考')}
+  <nav class="subtabs" aria-label="思考分区">${SUBS.map(([k,l])=>`<button type="button" class="chipbtn" data-act="sub" data-v="${k}" aria-pressed="${sub===k}">${l}</button>`).join('')}</nav>
+  ${SUBS.map(([k])=>`<div class="stack" data-sub="${k}"${k===sub?'':' hidden'}>${THINK[k]()}</div>`).join('')}
+  </div>`}
+const visibleNotes=ids=>ids.filter(id=>D.blocks[id]&&!isHidden('blk:'+id)).length;
+const noteGroup=(key,title,ids)=>group(key,title,notes(ids),{closed:true,count:visibleNotes(ids)||null});
+const cluster=(label,html)=>hasContent(html)?`<div class="cluster"><div class="cluster-k">${label}</div>${html}</div>`:'';
+function stepCard(s){if(isHidden('w:step:'+s.id))return '';const it=itemById(s.id);const k='step:'+s.id;const open=isOpen(k,true);
+  const nOpen=it?todosOf(it).filter(t=>!t.done).length+(it.weekly||[]).filter(w=>!recOn(CUR_WK,w.id)).length:0;
+  return `<div class="it${open?' open':''}" id="it-${esc(s.id)}" data-key="${k}">
+    <div class="it-row"><button class="it-h" type="button" data-act="exp" data-id="${k}" data-def="1" aria-expanded="${open}"><span class="car"></span><span class="it-t" data-find>${esc(s.title)}</span></button>
+      <span class="it-meta">${nOpen?`<span>${nOpen} 项</span>`:''}</span></div>
+    <div class="xb"${open?'':' hidden'}>
+      ${T.editBlock==='st:'+s.id?`<form class="edit" data-form="step" data-id="${esc(s.id)}"><label>说明<input class="field" name="desc" id="st-desc-${esc(s.id)}" value="${esc(s.desc||'')}"></label>
+        <label>要点（每行一条）<textarea class="field" name="text" id="st-text-${esc(s.id)}" rows="${s.items.length+2}">${esc(s.items.join('\n'))}</textarea></label>
+        <div class="btnrow"><button class="btn" type="submit">保存</button><button class="btn ghost" type="button" data-act="blk-cancel">取消</button></div></form>`
+      :`${s.desc?`<p class="row-sub">${md(s.desc)}</p>`:''}${s.items.length?`<ul class="list step-pts">${s.items.map(x=>`<li data-find>${md(x)}</li>`).join('')}</ul>`:''}`}
+      ${it?`<div class="todos">${itemTodos(it,'step')}</div>${todoAdd(it)}${logPart(it)}`:''}
+      <div class="row-foot"><button class="linkbtn muted" type="button" data-act="step-edit" data-id="${esc(s.id)}">编辑</button><button class="linkbtn danger" type="button" data-act="hide" data-id="w:step:${esc(s.id)}" data-v="${esc(s.title)}">删除</button></div>
+    </div></div>`}
+function autoTimeline(sec){
+  const open=liveTodos().filter(t=>!t.done&&t.ddl&&(!sec||secOf(itemById(t.item).area)===sec)).sort((a,b)=>a.ddl<b.ddl?-1:a.ddl>b.ddl?1:0);
+  const over=open.filter(t=>t.ddl<TODAY_ISO),fut=open.filter(t=>t.ddl>=TODAY_ISO);
+  const byYm={};for(const t of fut)(byYm[t.ddl.slice(0,7)]=byYm[t.ddl.slice(0,7)]||[]).push(t);
+  const thisY=TODAY_ISO.slice(0,4);
+  const row=(cls,lbl,ts)=>`<div class="tl-p${cls}"><div class="tl-when">${lbl}</div><div class="todos">${ts.map(t=>todoLine(t,'atl',{chip:true,noDel:true,find:true})).join('')}</div></div>`;
+  return (over.length?row(' over','已逾期',over):'')+Object.keys(byYm).sort().map(ym=>{const [y,m]=ym.split('-');
+    return row(ym===TODAY_YM?' now':'',(y===thisY?'':y+' 年 ')+(+m)+' 月',byYm[ym])}).join('')}
+function renderTimeline(){
+  const sec=SECNAME[U.tlSec]?U.tlSec:'';const body=autoTimeline(sec);
+  const n=liveTodos().filter(t=>!t.done&&t.ddl&&(!sec||secOf(itemById(t.item).area)===sec)).length;
+  return `<div class="narrow stack">
+  ${pageHead('时间线','<span class="small muted">所有还没完成、带 DDL 的待办</span>')}
+  ${filterChips('tl-sec',sec,[['','全部'],...SECTIONS])}
+  ${body?`<div class="box">${body}</div>`:'<p class="blank">这里还没有带 DDL 的待办。</p>'}
+  <p class="hint">共 ${n} 项。没有 DDL 的待办不在这里，给它设个日期就会出现。</p>
+  </div>`}
+function timelineHtml(){
+  const P=D.timeline.periods||[];
+    const tl=P.map((p,i)=>{const next=P.slice(i+1).find(q=>q.ym>p.ym);const now=p.ym<=TODAY_YM&&(!next||next.ym>TODAY_YM);const past=!now&&p.ym<TODAY_YM;
+      const items=[...(p.refs||[]).map(todoById).filter(t=>t&&!t.del).map(t=>todoLine(t,'tl',{chip:true,noDel:true})),
+        ...(p.extra||[]).map(x=>{const k='tl:'+x.id;const on=!!D.checks[k];return `<div class="td${on?' done':''}"><input type="checkbox" id="cb-tl-${esc(x.id)}" data-act="check" data-id="${k}"${on?' checked':''}><label class="td-t" for="cb-tl-${esc(x.id)}">${md(x.t)}</label></div>`})];
+      return `<div class="tl-p${now?' now':''}${past?' past':''}"><div class="tl-when">${esc(p.label)}</div><div class="todos">${items.join('')||'<p class="blank">—</p>'}</div></div>`}).join('');
+  return tl}
+const THINK={
+  /* 退半步: research planning */
+  half(){const s=D.steps.find(x=>x.id==='hb');return `
+    ${s?stepCard(s):''}
+    ${cluster('研究思考',notes(['how','what','taste','watch','ptaste']))}`},
+  /* 退一步: career planning */
+  full(){const s=D.steps.find(x=>x.id==='fb');
+    const tl=timelineHtml();const rated=D.abilities.filter(a=>D.rate[a.id]).length;
+    return `
+    ${s?stepCard(s):''}
+    ${cluster('规划资料',`
+      ${noteGroup('l-career','职业规划',['career_lede','path_academia','path_industry','path_startup','formula','ap_checks','career_other'])}
+      ${group('l-old','旧版计划',`${notes(['old_0813'])}${tl?`<div class="box"><div class="box-h"><h3>时间线${D.timeline.version?' '+esc(D.timeline.version):''}（旧）</h3></div>${tl}</div>`:''}`,{closed:true})}
+      ${D.abilities.length?group('s-review','Periodic Review',`<div class="box">${D.abilities.map(a=>`<div class="rate" data-find><span class="rate-t">${esc(a.t)}</span><span class="dots">${[1,2,3,4,5].map(v=>`<button type="button" class="${(D.rate[a.id]||0)>=v?'on':''}" data-act="rate" data-id="${esc(a.id)}" data-v="${v}" aria-label="${v} 分">${v}</button>`).join('')}</span></div>`).join('')}${rated?`<p class="hint">上次自评：${esc(D.rateAt)}</p>`:''}</div>`,{closed:true,hide:'w:review'}):''}`)}`},
+  notes(){
+    const person=c=>c.p||c.who;const whos=[...new Set(D.convs.map(person))];
+    const convs=D.convs.map(c=>({c,items:(c.items||[]).filter(x=>!U.cfTag||(x.tags||[]).includes(U.cfTag))})).filter(g=>(g.items.length||T.editConv===g.c.id)&&(!U.cfWho||person(g.c)===U.cfWho));
+    return `
+    ${group('n-inbox','随手记',`<div class="box">
+      <form data-form="inbox" class="add slim"><textarea class="field" id="inbox-text" placeholder="先记下来，之后再整理" aria-label="随手记" rows="2">${esc(U.draft||'')}</textarea><button class="btn sm" type="submit">记下</button></form>
+      ${D.inbox.map(n=>`<div class="inbox-i" data-find><span class="date">${esc(mdShort(n.d))}</span><p>${esc(n.t)}</p><button class="x" type="button" data-act="inbox-del" data-id="${esc(n.id)}" aria-label="删除这条">×</button></div>`).join('')}</div>`,{count:D.inbox.length||null})}
+    ${group('n-talks','对话',`
+      <div class="filters">${filterChips('cf-who',U.cfWho,[['','所有人'],...whos.map(w=>[w,w])])}${filterChips('cf-tag',U.cfTag,[['','全部话题'],...Object.entries(TAGS)])}</div>
+      ${T.editConv==='new'?convForm(null):''}
+      <div class="convs">${[...convs].reverse().map(g=>convCard(g.c,g.items)).join('')||'<p class="blank">没有符合筛选的记录。</p>'}</div>`,
+      {id:'convs',count:D.convs.length,aside:`<button class="btn ghost sm" type="button" data-act="conv-new">+ 新对话</button>`})}
+    ${group('s-absorb','待吸收',`<div class="box">${D.absorb.map(x=>`<div class="td${x.done?' done':''}" data-find><input type="checkbox" id="ab-${esc(x.id)}" data-act="absorb" data-id="${esc(x.id)}"${x.done?' checked':''}><span class="td-t">${md(x.t)}</span><span class="act"><button class="x" type="button" data-act="absorb-del" data-id="${esc(x.id)}" aria-label="删除">×</button></span></div>`).join('')}
+      <form class="add slim" data-form="absorb"><input type="text" class="field" id="absorb-t" name="t" placeholder="+ 新的想法" required aria-label="新的想法"><button class="btn sm" type="submit">添加</button></form></div>`,{closed:true,count:D.absorb.filter(x=>!x.done).length,hide:'w:absorb'})}`}
+};
+
+function renderSettings(){
+  const c=GH.cfg;const dis=T.confirm==='disconnect';const imp=T.confirm==='import';
+  const hidden=Object.entries(D.hidden||{});
+  const hiddenLabel=(k,t)=>{if(t&&t!==k)return t;const b=k.startsWith('blk:')&&D.blocks[k.slice(4)];return b?(b.title||plain(String(b.text||'')).split('\n')[0].slice(0,24)||'笔记'):t};
+  return `<div class="narrow stack">
+  ${pageHead('设置')}
+  <section class="box"><h2 class="h-sm">同步</h2>
+    ${Sync.mode==='github'?`<p class="para small">数据存在私有仓库 <strong>${esc(c.owner)}/${esc(c.repo)}</strong> 的 <code>${esc(c.path)}</code>，每次保存是一次 commit。状态：${esc(document.getElementById('sync').textContent)}</p>`
+      :`<p class="para small">现在是<strong>本地预览</strong>，改动只存在这个浏览器里。</p>`}
+    <div class="btnrow">
+      ${Sync.mode==='github'?`<button class="btn" type="button" data-act="sync-now">立即同步</button>`:`<button class="btn" type="button" data-act="connect">连接 GitHub 私有仓库</button>`}
+      <button class="btn ghost" type="button" data-act="download">下载备份</button>
+      ${imp?`<button class="btn danger" type="button" data-act="import-confirm">确认：用这个文件覆盖全部数据</button><button class="btn ghost" type="button" data-act="import-cancel">取消</button>`:`<label class="btn ghost" for="import-file" style="display:inline-block">导入备份</label>`}
+      <input type="file" id="import-file" accept="application/json,.json" data-act="import" hidden>
+      ${Sync.mode==='github'?`<button class="btn danger" type="button" data-act="disconnect" style="margin-left:auto">${dis?'再点一次：移除这台设备的 token':'断开这台设备'}</button>`:''}
+    </div></section>
+  <section class="box"><h2 class="h-sm">外观</h2>${filterChips('theme',U.theme,[['system','跟随系统'],['light','浅色'],['dark','深色']])}</section>
+  <p class="hint">版本 ${esc(BUILD)}</p>
+  <section class="box" id="settings-hidden"><h2 class="h-sm">已删除的窗口</h2>
+    ${hidden.length?`<div class="chips">${hidden.map(([k,t])=>`<span class="tag restore">${esc(hiddenLabel(k,t))}<button class="linkbtn" type="button" data-act="unhide" data-id="${esc(k)}">恢复</button></span>`).join('')}</div>`:'<p class="blank">没有。</p>'}</section>
+  </div>`}
+
+/* ============================== connect screen ============================== */
+function renderConnect(){
+  const c=GH.cfg||ls.get(CFG_KEY)||{};const stage=T.connectStage;
+  document.getElementById('tabs').innerHTML='';document.querySelector('.search').hidden=true;
+  document.getElementById('panels').dataset.ready='';
+  document.getElementById('panels').innerHTML=`<div class="connect">
+    <div class="hero"><p class="umb">连接你的私有数据仓库</p><p class="umb-sub">这个网页本身不含任何内容。所有计划都存在你自己的 private repo 里，只有持有 token 的设备能读写。</p></div>
+    ${stage==='missing'?`<div class="box"><h3>仓库连上了，但里面还没有数据文件</h3>
+      <p class="para small">第一次用：选择模板里的 <code>example-data.json</code> 看示例，它会作为 <code>${esc(c.path||'data.json')}</code> 写进仓库。也可以选一份之前下载的备份。</p>
+      <div class="btnrow"><label class="btn" for="seed-file">选择 JSON 文件</label><input type="file" id="seed-file" accept="application/json,.json" data-act="seed-file" hidden>
+      <button class="btn ghost" type="button" data-act="start-empty">从空白开始</button></div>${T.connectErr?`<p class="err">${esc(T.connectErr)}</p>`:''}</div>`:`
+    <form class="box" data-form="connect" style="gap:12px">
+      <label class="small muted" style="display:grid;gap:3px">GitHub 用户名<input class="field" name="owner" id="cn-owner" value="${esc(c.owner||'')}" required autocomplete="username"></label>
+      <label class="small muted" style="display:grid;gap:3px">私有仓库名<input class="field" name="repo" id="cn-repo" value="${esc(c.repo||'phd-plans-data')}" required></label>
+      <div class="grid2" style="gap:12px"><label class="small muted" style="display:grid;gap:3px">文件路径<input class="field" name="path" id="cn-path" value="${esc(c.path||'data.json')}" required></label>
+      <label class="small muted" style="display:grid;gap:3px">分支<input class="field" name="branch" id="cn-branch" value="${esc(c.branch||'main')}" required></label></div>
+      <label class="small muted" style="display:grid;gap:3px">Fine-grained token<input class="field" type="password" name="token" id="cn-token" value="" placeholder="github_pat_…" required autocomplete="off"></label>
+      <div class="btnrow"><button class="btn" type="submit">${stage==='busy'?'连接中…':'连接'}</button>${D?`<button class="btn ghost" type="button" data-act="connect-cancel">返回</button>`:''}</div>
+      ${T.connectErr?`<p class="err">${esc(T.connectErr)}</p>`:''}
+    </form>
+    <div class="box"><h3>第一次设置（约 3 分钟）</h3><ol>
+      <li>在 GitHub 新建一个 <strong>Private</strong> 仓库，例如 <code>phd-plans-data</code>，勾选 Add a README。</li>
+      <li>Settings → Developer settings → Personal access tokens → <strong>Fine-grained tokens</strong> → Generate new token。Repository access 选 Only select repositories，只选这个仓库；Permissions 里把 <strong>Contents</strong> 设为 Read and write。</li>
+      <li>把 token 粘贴到上面。每台设备粘贴一次，之后自动记住。</li></ol>
+      <p class="hint">Token 只存在这台设备的浏览器里，不会写进任何仓库。丢了或泄露了，去 GitHub 删掉重建就行。</p></div>`}
+  </div>`;
+}
+async function doConnect(cfg){
+  T.connectErr='';T.connectStage='busy';GH.cfg=cfg;renderConnect();
+  try{await GH.repo()}catch(e){T.connectStage='';T.connectErr=e.status===401?'Token 无效，请检查是否复制完整。':e.status===404?'找不到这个仓库：检查用户名、仓库名，以及 token 是否勾选了这个仓库。':'连接失败：'+e.message;renderConnect();return}
+  let remote;try{remote=await GH.get()}catch(e){T.connectStage='';T.connectErr=e.status===403?'Token 没有 Contents 读写权限。':'读取失败：'+e.message;renderConnect();return}
+  ls.set(CFG_KEY,cfg);Sync.mode='github';
+  if(remote.missing){T.connectStage='missing';renderConnect();return}
+  T.connectStage='';D=adopt(remote.data);Sync.base=remote.data;Sync.sha=remote.sha;Sync.pending=false;Sync.status='ok';Sync.lastAt=nowHM();Sync.cache();reindex();paintSync();render();toast('已连接 '+cfg.owner+'/'+cfg.repo);
+}
+async function firstWrite(data){
+  D=adopt(data);reindex();Sync.mode='github';Sync.sha=null;Sync.base={};Sync.pending=true;Sync.acts=['初始化数据'];
+  await Sync.push();
+  if(Sync.status==='ok'){T.connectStage='';render();toast('数据已写进仓库')}else{T.connectErr='写入失败：'+(Sync.msg||Sync.status);renderConnect()}
+}
+
+/* ============================== app shell ============================== */
+const PANELS={week:renderWeek,tl:renderTimeline,research:renderResearch,exp:renderExp,dim:renderDim,admin:renderAdmin,think:renderThink,settings:renderSettings};
+const PANEL_IDS=Object.keys(PANELS);
+function renderTabs(){
+  const over=D?liveTodos().filter(t=>!t.done&&t.ddl&&daysTo(t.ddl)<0).length:0;
+  document.getElementById('tabs').innerHTML=TABS.map(([id,zh])=>`<button class="tab" type="button" role="tab" id="tab-${id}" aria-controls="p-${id}" aria-selected="${U.tab===id}" data-act="tab" data-v="${id}">${zh}${id==='week'&&over?`<span class="n" title="已逾期">${over}</span>`:''}</button>`).join('')+'<span class="tab-ind" aria-hidden="true"></span>';
+  document.getElementById('settings-btn').setAttribute('aria-pressed',U.tab==='settings');
+  placeInd();
+}
+/* the selected-tab pill slides between tabs; its last position is kept because the tab row is rebuilt on every render */
+let indAt=null;
+function placeInd(anim){
+  const tabs=document.getElementById('tabs');const ind=tabs&&tabs.querySelector('.tab-ind');if(!ind)return;
+  const a=tabs.querySelector('.tab[aria-selected="true"]');
+  if(!a){ind.style.opacity='0';indAt=null;return}
+  const to={x:a.offsetLeft,w:a.offsetWidth},from=indAt;indAt=to;
+  ind.style.width=to.w+'px';ind.style.transform=`translateX(${to.x}px)`;
+  if(anim===false||!Motion.ok())return;
+  if(!from)ind.animate([{opacity:0},{opacity:1}],{duration:200,easing:'ease-out'});
+  else if(from.x!==to.x||from.w!==to.w){
+    ind.animate([{transform:`translateX(${from.x}px)`,width:from.w+'px'},{transform:`translateX(${to.x}px)`,width:to.w+'px'}],{duration:380,easing:Motion.EASE});
+    if(tabs.scrollWidth>tabs.clientWidth+1)tabs.scrollTo({left:Math.max(0,to.x-(tabs.clientWidth-to.w)/2),behavior:'smooth'})}
+}
+addEventListener('resize',()=>placeInd(false),{passive:true});
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>placeInd(false));
+function ensurePanels(){const host=document.getElementById('panels');if(host.dataset.ready)return;
+  host.innerHTML=PANEL_IDS.map(id=>`<div class="panel" data-panel="${id}" id="p-${id}" role="tabpanel" hidden></div>`).join('');host.dataset.ready='1'}
+function renderPanel(id){document.getElementById('p-'+id).innerHTML=PANELS[id]();T.stale[id]=false}
+function render(){
+  if(!D)return;ensurePanels();document.querySelector('.search').hidden=false;
+  if(!PANELS[U.tab])U.tab='week';
+  const sig=[U.tab,U.tab==='week'?(U.week||CUR_WK):'',U.tab==='think'?U.sub:''].join('|'),snap=Motion.before(sig);
+  const a=document.activeElement;const aid=a&&a.id;const key=a&&a.dataset&&a.dataset.act?[a.dataset.act,a.dataset.id||'',a.dataset.v||'']:null;
+  renderTabs();
+  for(const id of PANEL_IDS){const el=document.getElementById('p-'+id);el.hidden=U.tab!==id;if(id===U.tab)renderPanel(id);else T.stale[id]=true}
+  let el=aid&&document.getElementById(aid);
+  if(!el&&key){const sel=`[data-act="${key[0]}"]`+(key[1]?`[data-id="${CSS.escape(key[1])}"]`:'')+(key[2]?`[data-v="${CSS.escape(key[2])}"]`:'');el=document.getElementById('p-'+U.tab).querySelector(sel)}
+  if(el&&el!==document.body)el.focus({preventScroll:true});
+  Motion.after(sig,snap);
+}
+function renderAllPanels(){for(const id of PANEL_IDS)if(T.stale[id]!==false)renderPanel(id)}
+let softPending=false;
+const typing=a=>a&&(a.tagName==='TEXTAREA'||(a.tagName==='INPUT'&&a.type==='text'));
+function renderSoft(){if(typing(document.activeElement)){softPending=true;return}render()}
+document.addEventListener('focusout',()=>{if(softPending){softPending=false;setTimeout(()=>{if(!typing(document.activeElement))render();else softPending=true},0)}});
+function setTab(id,sub){if(!PANELS[id])return;U.tab=id;if(sub)U.sub=sub;saveUI();try{history.replaceState(null,'','#'+id)}catch(e){}render()}
+/* show a collapsed element: open every collapsed ancestor and switch to its sub-page */
+function reveal(el){
+  for(let p=el;p&&p.id!=='panels';p=p.parentElement){
+    if(p.classList.contains('xb')&&p.hidden){p.hidden=false;const box=p.parentElement;box.classList.add('open');
+      const btn=box.querySelector(':scope > .it-row [data-act="exp"], :scope > .grp-hd [data-act="exp"]');if(btn)btn.setAttribute('aria-expanded','true');
+      if(box.dataset.key)U.exp[box.dataset.key]=true}
+    if(p.dataset&&p.dataset.sub&&p.hidden){U.sub=p.dataset.sub;const host=p.parentElement;
+      host.querySelectorAll(':scope > [data-sub]').forEach(x=>{x.hidden=x!==p});
+      host.querySelectorAll('.subtabs [data-act="sub"]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===p.dataset.sub))}
+  }
+  saveUI();
+}
+function goto(tab,target,sub){setTab(tab,sub);requestAnimationFrame(()=>{const el=document.getElementById(target);if(el){reveal(el);flash(el)}else window.scrollTo({top:0})})}
+function flash(el){el.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'center'});el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash');setTimeout(()=>el.classList.remove('flash'),1700)}
+let toastT,undoSnap=null;const snapshot=()=>{undoSnap=clone(D)};
+function toast(msg,undo){const t=document.getElementById('toast');t.innerHTML=esc(msg)+(undo?' <button type="button" class="linkbtn" data-act="undo" style="color:inherit;text-decoration:underline;margin-left:8px">撤销</button>':'');Motion.show(t);clearTimeout(toastT);toastT=setTimeout(()=>Motion.hide(t),undo?6000:2400)}
+
+/* ============================== motion ============================== */
+/* A render replaces the whole panel, so motion is layered on afterwards: rows and cards that survive slide from where
+   they were (FLIP), new ones fade in, removed ones fade out as detached ghosts, a new tab or week slides in.
+   Opening a section animates its height. All of it is skipped when the system asks for reduced motion. */
+const Motion=(()=>{
+  const EASE='cubic-bezier(.32,.72,0,1)';
+  const SEL='.td,.lc,.it,.grp-s,.sub-x,.wk-area,.wk-it,.log-e,.tl-p,.fr,.stu,.inbox-i,.row-foot,.sub-k,.cluster-k,.ch-box,form';
+  const rm=matchMedia('(prefers-reduced-motion: reduce)');
+  const ok=()=>!rm.matches&&typeof Element.prototype.animate==='function';
+  let lastSig='';
+  const key=el=>{
+    if(el.tagName==='FORM')return 'f:'+el.dataset.form+':'+(el.dataset.id||el.dataset.item||'');
+    if(el.id)return '#'+el.id;
+    if(el.dataset.key)return 'k:'+el.dataset.key;
+    const c=el.classList;
+    if(c.contains('wk-area'))return 'wa:'+el.dataset.c;
+    if(c.contains('wk-it')){const h=el.querySelector('.wk-it-h');return h?'wi:'+(h.dataset.target||h.textContent):''}
+    if(c.contains('tl-p')){const w=el.querySelector('.tl-when');return w?'tl:'+w.textContent:''}
+    const cb=el.querySelector('input[type=checkbox]');if(cb)return 'cb:'+(cb.id||cb.dataset.act+':'+cb.dataset.id);
+    const d=el.querySelector('[data-id]');return d?c[0]+':'+d.dataset.act+':'+d.dataset.id:c[0]+':'+el.textContent.trim().slice(0,40)};
+  function collect(panel){const m=new Map(),n={};
+    for(const el of panel.querySelectorAll(SEL)){let k=key(el);if(!k)continue;n[k]=(n[k]||0)+1;if(n[k]>1)k+='#'+n[k];m.set(k,el)}
+    return m}
+  const shown=r=>r.width>0||r.height>0;
+  function before(sig){
+    const panel=document.getElementById('p-'+U.tab);
+    if(!ok()||sig!==lastSig||!panel)return null;
+    const els=collect(panel),rects=new Map();
+    for(const [k,el] of els){const r=el.getBoundingClientRect();if(shown(r))rects.set(k,r)}
+    return {els,rects,bars:[...panel.querySelectorAll('.bar i')].map(b=>b.style.width)}}
+  function after(sig,snap){
+    const panel=document.getElementById('p-'+U.tab);const prev=lastSig;lastSig=sig;
+    if(!ok()||!panel)return;
+    if(!snap){if(prev&&prev!==sig)enter(panel,prev,sig);return}
+    const now=collect(panel),vh=innerHeight,vis=r=>r.bottom>-80&&r.top<vh+80;
+    const up=el=>{const p=el.parentElement&&el.parentElement.closest(SEL);return p&&panel.contains(p)?p:null};
+    const moved=new Map(),fresh=new Map();
+    for(const [k,el] of now){const r=el.getBoundingClientRect();if(!shown(r))continue;const o=snap.rects.get(k);
+      if(o)moved.set(el,{dx:o.left-r.left,dy:o.top-r.top,show:vis(o)||vis(r)});else if(!snap.els.has(k))fresh.set(el,r)}
+    for(const [el,m] of moved){
+      const p=up(el),pm=p&&moved.get(p);const x=m.dx-(pm?pm.dx:0),y=m.dy-(pm?pm.dy:0);
+      if(m.show&&(Math.abs(x)>=1||Math.abs(y)>=1))el.animate([{transform:`translate(${x}px,${y}px)`},{transform:'none'}],{duration:360,easing:EASE})}
+    for(const [el,r] of fresh){const p=up(el);if(p&&fresh.has(p)||!vis(r))continue;
+      el.animate([{opacity:0,transform:'translateY(-6px) scale(.985)'},{opacity:1,transform:'none'}],{duration:280,easing:EASE})}
+    const okey=new Map([...snap.els].map(([k,el])=>[el,k]));let n=0;
+    for(const [k,el] of snap.els){
+      if(now.has(k))continue;const r=snap.rects.get(k);if(!r||!vis(r)||r.height>700)continue;
+      const p=el.parentElement&&el.parentElement.closest(SEL),pk=p&&okey.get(p);if(pk&&!now.has(pk))continue;
+      if(++n>16)break;ghost(el,r)}
+    panel.querySelectorAll('.bar i').forEach((b,i)=>{const w=snap.bars[i];if(w!=null&&w!==b.style.width)b.animate([{width:w},{width:b.style.width}],{duration:520,easing:EASE})})}
+  /* a removed row lingers for a moment where it was, then fades */
+  function ghost(el,r){
+    el.removeAttribute('id');el.querySelectorAll('[id]').forEach(x=>x.removeAttribute('id'));
+    el.inert=true;el.setAttribute('aria-hidden','true');
+    Object.assign(el.style,{position:'fixed',left:r.left+'px',top:r.top+'px',width:r.width+'px',height:r.height+'px',margin:'0',zIndex:'25',pointerEvents:'none'});
+    document.body.appendChild(el);
+    const a=el.animate([{opacity:1,transform:'none'},{opacity:0,transform:'scale(.97)'}],{duration:220,easing:'ease-out',fill:'forwards'});
+    a.onfinish=()=>el.remove()}
+  function enter(panel,prev,sig){
+    const [pt,pw]=prev.split('|'),[t,w]=sig.split('|');
+    const from=pt===t&&t==='week'&&pw!==w?{opacity:0,transform:`translateX(${w>pw?32:-32}px)`}:{opacity:0,transform:'translateY(10px)'};
+    panel.animate([from,{opacity:1,transform:'none'}],{duration:340,easing:EASE})}
+  /* open / close a section body by animating its height (and padding, and the parent's gap) */
+  function slide(body,open){
+    const box=body.parentElement;
+    const cur=()=>{const c=getComputedStyle(body);return {h:body.getBoundingClientRect().height,pt:parseFloat(c.paddingTop)||0,pb:parseFloat(c.paddingBottom)||0,bt:parseFloat(c.borderTopWidth)||0,mt:parseFloat(c.marginTop)||0,o:+c.opacity}};
+    const from=body.hidden?null:cur();
+    if(body._slide){body._slide.cancel();body._slide=null}
+    body.hidden=false;delete body.dataset.closing;body.style.overflow='';
+    if(!ok()){body.hidden=!open;return}
+    const nat=cur(),pc=box&&getComputedStyle(box),gap=pc&&/grid|flex/.test(pc.display)&&body.previousElementSibling?parseFloat(pc.rowGap)||0:0;
+    const zero={h:0,pt:0,pb:0,bt:0,mt:nat.mt-gap,o:0};
+    const a0=from||zero,a1=open?nat:zero;
+    const f=v=>({height:v.h+'px',paddingTop:v.pt+'px',paddingBottom:v.pb+'px',borderTopWidth:v.bt+'px',marginTop:v.mt+'px',opacity:v.o});
+    body.style.overflow='hidden';if(!open)body.dataset.closing='1';
+    const a=body.animate([f(a0),f(a1)],{duration:Math.min(440,Math.max(240,200+Math.abs(a1.h-a0.h)*.18)),easing:EASE,fill:open?'none':'forwards'});
+    body._slide=a;
+    a.onfinish=()=>{body._slide=null;body.style.overflow='';if(!open){delete body.dataset.closing;if(!(box&&box.classList.contains('open')))body.hidden=true;a.cancel()}}}
+  function show(el){if(el._hide){el._hide.cancel();el._hide=null}el.hidden=false}
+  function hide(el){if(el.hidden||el._hide)return;if(!ok()){el.hidden=true;return}
+    const a=el.animate([{opacity:1,transform:'translate(-50%,0) scale(1)'},{opacity:0,transform:'translate(-50%,6px) scale(.98)'}],{duration:200,easing:'ease-in',fill:'forwards'});
+    el._hide=a;a.onfinish=()=>{el._hide=null;el.hidden=true;a.cancel()}}
+  return {EASE,ok,before,after,slide,show,hide}
+})();
+function applyTheme(){const r=document.documentElement;if(U.theme==='system')r.removeAttribute('data-theme');else r.setAttribute('data-theme',U.theme)}
+function download(){const blob=new Blob([JSON.stringify(D,null,1)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='phd-plans-'+TODAY_ISO+'.json';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)}
+function readFile(input){return new Promise((res,rej)=>{const f=input.files&&input.files[0];if(!f)return rej(new Error('没有选择文件'));const r=new FileReader();r.onload=()=>{try{res(JSON.parse(r.result))}catch(e){rej(new Error('不是有效的 JSON 文件'))}};r.onerror=()=>rej(new Error('读取文件失败'));r.readAsText(f)})}
+
+/* ============================== events ============================== */
+document.addEventListener('change',async e=>{
+  const t=e.target,act=t.dataset&&t.dataset.act,id=t.dataset&&t.dataset.id;if(!act||!D&&act!=='seed-file')return;
+  if(t.type==='checkbox'&&/^(done|rec|check|absorb)$/.test(act)){const row=t.closest('.td,.lc');if(row)row.classList.toggle('done',t.checked)}
+  switch(act){
+    case 'st':{const it=itemById(id);if(!it)return;const old=st(it);it.st=t.value;addLog(it.id,`状态：${old} → ${t.value}`,{auto:true});commit('状态');return}
+    case 'rec':{const w=ensureWeek(t.dataset.v);const it=itemById(t.dataset.item);const wt=it&&(it.weekly||[]).find(x=>x.id===id);
+      if(t.checked){snapshot();w.rec[id]=TODAY_ISO;if(wt)addLog(it.id,'每周：'+wt.t,{auto:true,rec:id,wk:t.dataset.v});commitSoon('每周任务');toast('已完成',true)}
+      else{delete w.rec[id];D.logs=D.logs.filter(l=>!(l.rec===id&&l.wk===t.dataset.v));commitSoon('每周任务')}return}
+    case 'done':if(t.checked){snapshot();setDone(id,true);commitSoon('完成 To-Do');toast('已完成',true)}else{setDone(id,false);commitSoon('取消完成')}return;
+    case 'ddl':{const td=todoById(id);if(td){td.ddl=t.value;delete T.ddlOpen[id];commit('DDL')}return}
+    case 'check':D.checks[id]=t.checked;if(!t.checked)delete D.checks[id];commitSoon('勾选');return;
+    case 'absorb':{const x=D.absorb.find(a=>a.id===id);if(x){x.done=t.checked;commitSoon('待吸收')}return}
+    case 'ch-date':{const c=D.channels.find(x=>x.id===id);if(c){c.date=t.value;commit('曝光渠道')}return}
+    case 'paper':U.paper=t.value;saveUI();render();return;
+    case 'last':{const it=itemById(id);if(it){it.last=t.value;commit('上次联系')}return}
+    case 'stu-add':{const s=(D.students||[]).find(x=>x.id===id);if(s&&t.value){s.projects=[...(s.projects||[]),t.value];commit('学生分配')}return}
+    case 'import':{try{T.pendingImport=rebaseExample(await readFile(t));T.confirm='import';setTab('settings')}catch(err){toast(err.message)}t.value='';return}
+    case 'seed-file':{try{const data=rebaseExample(await readFile(t));await firstWrite(data)}catch(err){T.connectErr=err.message;renderConnect()}return}
+  }
+});
+let typeTimer;
+document.addEventListener('input',e=>{
+  const t=e.target;
+  if(t.dataset&&t.dataset.act==='letter'&&D){D.letters[+t.dataset.id]=t.value;clearTimeout(typeTimer);typeTimer=setTimeout(()=>Sync.changed('推荐信'),600);return}
+  if(t.id==='inbox-text'){U.draft=t.value;saveUI();return}
+  if(t.dataset&&t.dataset.wk&&t.dataset.field&&D){ensureWeek(t.dataset.wk)[t.dataset.field]=t.value;clearTimeout(typeTimer);typeTimer=setTimeout(()=>Sync.changed('周计划'),600)}
+});
+document.addEventListener('submit',e=>{
+  const f=e.target;const kind=f.dataset&&f.dataset.form;if(!kind)return;e.preventDefault();
+  const v=n=>{const el=f.elements.namedItem(n);return el?(el.type==='checkbox'?el.checked:String(el.value).trim()):''};
+  const refocus=id=>{const n=document.getElementById(id);if(n)n.focus()};
+  switch(kind){
+    case 'connect':{const cfg={owner:v('owner'),repo:v('repo'),path:v('path').replace(/^\/+/,''),branch:v('branch'),token:v('token')};doConnect(cfg);return}
+    case 'todo-edit':saveTodoEdit(f.elements.t);return;
+    case 'todo-add':{const item=f.dataset.item;if(!v('t'))return;if(v('rep')){const it=itemById(item);if(!it)return;(it.weekly=it.weekly||[]).push({id:'w'+uid(),t:v('t'),created:TODAY_ISO});U.exp[item]=true;commit('新每周任务');refocus('add-t-'+item);return}addTodo(item,v('t'),v('d'),'');U.exp[item]=true;commit('新 To-Do');refocus('add-t-'+item);return}
+    case 'wk-quick':{if(!v('t'))return;if(v('rep')){const it=itemById(v('item'));if(!it)return;(it.weekly=it.weekly||[]).push({id:'w'+uid(),t:v('t'),created:TODAY_ISO});U.lastItem=v('item');saveUI();commit('新每周任务');refocus('wkq-t');return}addTodo(v('item'),v('t'),v('d'),f.dataset.wk);U.lastItem=v('item');saveUI();commit('周计划');refocus('wkq-t');return}
+    case 'log-add':{if(!v('t'))return;addLog(f.dataset.item,v('t'),{d:v('d')||TODAY_ISO});U.exp['log:'+f.dataset.item]=true;commit('进展记录');refocus('log-t-'+f.dataset.item);return}
+    case 'item-add':{const area=f.dataset.area,k=f.dataset.kind;const it={id:k==='proj'?nextProjId():'n'+uid(),area,kind:k,set:KIND_SET[k],title:v('title'),created:TODAY_ISO};
+      it.st=SETS[it.set][k==='proj'?3:0];if(k==='proj'){it.target=v('sub');it.people='';it.notes=''}else it.sub=v('sub');
+      if(area==='research')it.sel=true;
+      D.items.push(it);T.adding='';U.exp[it.id]=true;saveUI();commit('新条目');requestAnimationFrame(()=>{const el=document.getElementById('it-'+it.id);if(el)flash(el)});return}
+    case 'item-edit':{const it=itemById(f.dataset.id);if(!it)return;it.title=v('title')||it.title;
+      if(it.kind==='proj'){it.target=v('target');it.people=f.elements.people.value.trim();it.notes=f.elements.notes.value.replace(/\s+$/,'')}else it.sub=v('sub');
+      T.editItem='';commit('编辑条目');return}
+    case 'blk':{const id=f.dataset.id;const b=D.blocks[id]=Object.assign({type:'list'},D.blocks[id]||{});b.title=v('title');b.text=f.elements.text.value.replace(/\s+$/,'');T.editBlock='';U.exp['blk:'+id]=true;commit('编辑：'+(b.title||id));return}
+    case 'step':{const s=D.steps.find(x=>x.id===f.dataset.id);if(!s)return;s.desc=v('desc');s.items=f.elements.text.value.split('\n').map(x=>x.trim()).filter(Boolean);s.checks={};T.editBlock='';commit('退一步清单');return}
+    case 'promo-add':{const pid=f.dataset.paper;const p=itemById(pid);if(!p||!v('t'))return;let pi=itemById('pr-'+pid);
+      if(!pi){pi={id:'pr-'+pid,area:'expo',kind:'promo',set:'todo',title:p.title+' · 宣传',sub:'',st:'进行中',paper:pid,created:TODAY_ISO};D.items.push(pi)}
+      if(v('rep'))(pi.weekly=pi.weekly||[]).push({id:'w'+uid(),t:v('t'),created:TODAY_ISO});else addTodo(pi.id,v('t'),v('d'),'');
+      U.exp['promo:'+pid]=true;commit('论文宣传 To-Do');refocus('add-t-pr-'+pid);return}
+    case 'student-new':{if(!v('name'))return;(D.students=D.students||[]).push({id:'st'+uid(),name:v('name'),projects:[],note:''});T.addingStudent=false;commit('学生');return}
+    case 'student':{const s=(D.students||[]).find(x=>x.id===f.dataset.id);if(!s)return;s.name=v('name')||s.name;s.note=v('note');T.editStudent='';commit('学生');return}
+    case 'conv':{const id=f.dataset.id;const items=textToConvItems(f.elements.text.value);
+      if(id==='new')D.convs.push({id:'c'+uid(),who:v('who'),p:v('who'),date:v('date'),items});
+      else{const c=D.convs.find(x=>x.id===id);if(!c)return;if(c.who!==v('who'))c.p=v('who');c.who=v('who');c.date=v('date');c.items=items}
+      T.editConv='';commit('对话记录');return}
+    case 'absorb':{if(!v('t'))return;D.absorb.push({id:'x'+uid(),t:v('t'),done:false});commit('待吸收');refocus('absorb-t');return}
+    case 'inbox':{const t=f.elements[0].value.trim();if(!t)return;D.inbox.unshift({id:uid(),t,d:TODAY_ISO});U.draft='';saveUI();commit('随手记');toast('已记下');return}
+  }
+});
+document.addEventListener('click',async e=>{
+  const b=e.target.closest('[data-act]');if(!b||b.tagName==='SELECT'||b.tagName==='INPUT')return;
+  const act=b.dataset.act,id=b.dataset.id,v=b.dataset.v;
+  if(!/^(disconnect|import-confirm|import-cancel)$/.test(act)){if(T.confirm==='import')T.pendingImport=null;T.confirm=''}
+  if(act.startsWith('selview:')){U.selView[act.slice(8)]=v;saveUI();render();return}
+  switch(act){
+    case 'tab':setTab(v);window.scrollTo({top:0});return;
+    case 'sub':setTab('think',v);return;
+    case 'goto':goto(b.dataset.tab,b.dataset.target,b.dataset.sub);return;
+    case 'exp':{const box=b.closest('[data-key]');const body=box&&box.querySelector(':scope > .xb');if(!body)return;
+      const open=body.hidden||body.dataset.closing==='1';box.classList.toggle('open',open);b.setAttribute('aria-expanded',open);U.exp[box.dataset.key]=open;saveUI();Motion.slide(body,open);return}
+    case 'sel':{const it=itemById(id);if(!it)return;it.sel=!it.sel;commit(it.sel?'标为 Selected':'取消 Selected');return}
+    case 'theme':U.theme=v;saveUI();applyTheme();render();return;
+    case 'tl-sec':U.tlSec=v;break;
+    case 'cf-who':U.cfWho=v;break; case 'cf-tag':U.cfTag=v;break; case 'pick-area':U.pickArea=v;break;
+    case 'todo-edit':{T.editTodo=v+':'+id;render();const n=document.getElementById('te-'+v+'-'+id);if(n){n.focus();n.select()}return}
+    case 'ddl-open':{T.ddlOpen[id]=true;render();const n=document.getElementById('dd-'+v+'-'+id);if(n){n.focus();try{n.showPicker()}catch(err){}}return}
+    case 'undo':if(undoSnap){D=adopt(undoSnap);undoSnap=null;document.getElementById('toast').hidden=true;commit('撤销');toast('已撤销')}return;
+    case 'hide':snapshot();D.hidden=D.hidden||{};D.hidden[id]=v||id;commit('删除窗口');toast('已删除，可在设置里恢复',true);return;
+    case 'unhide':if(D.hidden){delete D.hidden[id];commit('恢复窗口');toast('已恢复')}return;
+    case 'item-edit':T.editItem=id;render();return;
+    case 'item-edit-cancel':T.editItem='';render();return;
+    case 'item-del':snapshot();D.items=D.items.filter(x=>x.id!==id);for(const t of D.todos)if(t.item===id)t.del=true;T.editItem='';commit('删除条目');toast('已删除条目',true);return;
+    case 'add-open':T.adding=v;render();{const n=document.getElementById('na-title-'+v);if(n)n.focus()}return;
+    case 'add-cancel':T.adding='';render();return;
+    case 'to-weekly':{const td=todoById(id);const it=td&&itemById(td.item);if(!it)return;snapshot();(it.weekly=it.weekly||[]).push({id:'w'+uid(),t:td.t,created:TODAY_ISO});deleteTodo(id);commit('改成每周任务');toast('已改成每周任务',true);return}
+    case 'to-once':{const it=itemById(b.dataset.item);const w=it&&(it.weekly||[]).find(x=>x.id===id);if(!w)return;snapshot();it.weekly=it.weekly.filter(x=>x.id!==id);addTodo(it.id,w.t,'',CUR_WK);commit('改成一次性 To-Do');toast('已改成一次性 To-Do，放在本周',true);return}
+    case 'focus':{const w=ensureWeek(v);if(w.focus[id])delete w.focus[id];else w.focus[id]=true;commit('这周重点');return}
+    case 'met':{const it=itemById(id);if(!it)return;it.last=TODAY_ISO;addLog(it.id,'联系了一次',{auto:true});commit('联系');toast('已记录：今天联系了');return}
+    case 'more':{const row=b.closest('.td');if(row)row.classList.toggle('show-act');return}
+    case 'wkly-del':{const it=itemById(b.dataset.item);if(!it)return;snapshot();it.weekly=(it.weekly||[]).filter(x=>x.id!==id);commit('删除每周任务');toast('已删除每周任务',true);return}
+    case 'todo-del':snapshot();deleteTodo(id);commit('删除 To-Do');toast('已删除 To-Do',true);return;
+    case 'log-del':snapshot();D.logs=D.logs.filter(l=>l.id!==id);commit('删除进展');toast('已删除进展',true);return;
+    case 'wk-toggle':{if(inWeek(id,v))weekRemove(v,id);else weekAdd(v,id);commit('周计划');return}
+    case 'wk-add':weekAdd(v,id);commit('周计划');return;
+    case 'wk-remove':weekRemove(v,id);commit('周计划');return;
+    case 'wk-go':U.week=v===CUR_WK?'':v;saveUI();if(U.tab!=='week')U.tab='week';render();window.scrollTo({top:0});return;
+    case 'wk-carry':{const w=ensureWeek(v);for(const tid of planIds(addWeeks(v,-1))){const t=todoById(tid);if(t&&!t.done&&!t.del&&!inWeek(tid,v))weekAdd(v,tid)}commit('周计划');toast('已移过来');return}
+    case 'blk-edit':T.editBlock=id;render();{const n=document.getElementById('blk-text-'+id);if(n)n.focus()}return;
+    case 'blk-cancel':T.editBlock='';render();return;
+    case 'step-edit':T.editBlock=T.editBlock==='st:'+id?'':'st:'+id;render();return;
+    case 'rate':D.rate[id]=+v;D.rateAt=TODAY_ISO;commit('自评');return;
+    case 'absorb-del':snapshot();D.absorb=D.absorb.filter(x=>x.id!==id);commit('待吸收');toast('已删除',true);return;
+    case 'inbox-del':snapshot();D.inbox=D.inbox.filter(n=>n.id!==id);commit('随手记');toast('已删除',true);return;
+    case 'ch-today':{const c=D.channels.find(x=>x.id===id);if(c){c.date=TODAY_ISO;commit('曝光渠道');toast('已记录：今天更新')}return}
+    case 'stu-proj':{const s=(D.students||[]).find(x=>x.id===id);if(!s)return;const p=s.projects||[];s.projects=p.includes(v)?p.filter(x=>x!==v):[...p,v];commit('学生分配');return}
+    case 'student-add':T.addingStudent=true;U.exp['r-stu']=true;render();{const n=document.getElementById('stu-new');if(n)n.focus()}return;
+    case 'student-edit':T.editStudent=id;render();{const n=document.getElementById('stu-name-'+id);if(n)n.focus()}return;
+    case 'student-cancel':T.addingStudent=false;T.editStudent='';render();return;
+    case 'student-del':snapshot();D.students=(D.students||[]).filter(x=>x.id!==id);commit('学生');toast('已删除学生',true);return;
+    case 'conv-new':T.editConv='new';U.cfWho='';U.cfTag='';U.exp['n-talks']=true;render();{const n=document.getElementById('cv-who-new');if(n)n.focus()}return;
+    case 'conv-edit':T.editConv=id;render();return;
+    case 'conv-cancel':T.editConv='';render();return;
+    case 'conv-del':snapshot();D.convs=D.convs.filter(c=>c.id!==id);T.editConv='';commit('对话记录');toast('已删除对话',true);return;
+    case 'sync-now':Sync.pending?Sync.push():Sync.refresh().then(()=>{if(Sync.status==='ok')toast('已是最新')});return;
+    case 'download':download();return;
+    case 'reload':location.replace(location.pathname+'?v='+encodeURIComponent(document.getElementById('update').dataset.v||Date.now())+location.hash);return;
+    case 'import-confirm':if(T.pendingImport){D=adopt(T.pendingImport);T.pendingImport=null;T.confirm='';commit('导入备份');toast('已导入')}return;
+    case 'import-cancel':T.pendingImport=null;T.confirm='';render();return;
+    case 'connect':T.connectStage='';T.connectErr='';renderConnect();return;
+    case 'connect-cancel':T.connectErr='';document.getElementById('panels').dataset.ready='';render();return;
+    case 'disconnect':if(T.confirm!=='disconnect'){T.confirm='disconnect';render();return}ls.del(CFG_KEY);ls.del(CACHE_KEY);location.reload();return;
+    case 'start-empty':await firstWrite(clone(EMPTY));return;
+    default:return;
+  }
+  saveUI();render();
+});
+document.getElementById('sync').addEventListener('click',()=>{if(!D)return;if(/error|offline/.test(Sync.status)){Sync.push();return}if(Sync.status==='auth'){T.connectStage='';T.connectErr='Token 失效或被撤销，请重新粘贴一个。';renderConnect();return}setTab('settings')});
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')Sync.refresh();else if(Sync.pending&&!Sync.pushing)Sync.push()});
+window.addEventListener('online',()=>{if(Sync.pending)Sync.push()});
+
+function saveTodoEdit(inp){T.editTodo='';const val=inp.value.trim();
+  if(inp.dataset.edit==='wkly'){const it=itemById(inp.dataset.item);const w=it&&(it.weekly||[]).find(x=>x.id===inp.dataset.id);if(w&&val&&val!==w.t){w.t=val;commit('修改每周任务')}else render();return}
+  const td=todoById(inp.dataset.id);if(td&&val&&val!==td.t){td.t=val;commit('修改 To-Do')}else render()}
+document.addEventListener('focusout',e=>{const t=e.target;if(t.dataset&&(t.dataset.edit==='todo'||t.dataset.edit==='wkly')&&T.editTodo===t.dataset.key)saveTodoEdit(t)});
+document.addEventListener('keydown',e=>{const t=e.target;if(e.key==='Escape'&&t.dataset&&(t.dataset.edit==='todo'||t.dataset.edit==='wkly')){T.editTodo='';render()}});
+
+const BUILD=(document.querySelector('meta[name="app-build"]')||{}).content||'dev';
+let lastCheck=0;
+async function checkUpdate(){
+  if(!/^https?:/.test(location.protocol)||Date.now()-lastCheck<60000)return;lastCheck=Date.now();
+  try{const r=await fetch(location.pathname+'?check='+Date.now(),{cache:'no-store'});if(!r.ok)return;
+    const m=/<meta name="app-build" content="([^"]+)"/.exec(await r.text());
+    if(m&&m[1]!==BUILD&&BUILD!=='dev'){const bar=document.getElementById('update');bar.dataset.v=m[1];bar.hidden=false}
+  }catch(e){}
+}
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')checkUpdate()});
+
+/* ============================== search ============================== */
+const q=document.getElementById('q'),res=document.getElementById('results');let hits=[];
+const PANELNAME=Object.assign({settings:'设置'},TABNAME);
+function textOf(el){let s='';const w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,{acceptNode:n=>n.parentElement.closest('select,button.x,.due,input,.wkb,.ichip')?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT});while(w.nextNode())s+=w.currentNode.nodeValue+' ';return s.replace(/\s+/g,' ').trim()}
+function doSearch(){
+  const term=q.value.trim().toLowerCase();if(!term||!D){res.hidden=true;return}
+  renderAllPanels();hits=[];
+  for(const el of document.querySelectorAll('#panels [data-find]')){const txt=textOf(el);const i=txt.toLowerCase().indexOf(term);if(i<0)continue;
+    hits.push({el,txt,i,tab:el.closest('[data-panel]').dataset.panel});if(hits.length>=50)break}
+  res.innerHTML=hits.length?hits.map((h,k)=>{const a=Math.max(0,h.i-36),b=Math.min(h.txt.length,h.i+term.length+60);
+    return `<button type="button" data-hit="${k}"><span class="rt">${PANELNAME[h.tab]}</span>${a>0?'…':''}${esc(h.txt.slice(a,h.i))}<mark>${esc(h.txt.slice(h.i,h.i+term.length))}</mark>${esc(h.txt.slice(h.i+term.length,b))}${b<h.txt.length?'…':''}</button>`}).join('')
+    :`<div class="empty">没有找到「${esc(q.value.trim())}」。</div>`;
+  res.hidden=false}
+q.addEventListener('input',doSearch);
+q.addEventListener('focus',()=>{if(q.value.trim())doSearch()});
+q.addEventListener('keydown',e=>{if(e.key==='Escape'){q.value='';res.hidden=true;q.blur()}if(e.key==='Enter'){const f=res.querySelector('button');if(f)f.click()}});
+res.addEventListener('click',e=>{const b=e.target.closest('[data-hit]');if(!b)return;const h=hits[+b.dataset.hit];res.hidden=true;if(!h)return;
+  U.tab=h.tab;saveUI();try{history.replaceState(null,'','#'+h.tab)}catch(e){}renderTabs();for(const id of PANEL_IDS)document.getElementById('p-'+id).hidden=id!==h.tab;
+  reveal(h.el);requestAnimationFrame(()=>flash(h.el))});
+document.addEventListener('click',e=>{if(!e.target.closest('.search'))res.hidden=true});
+document.addEventListener('keydown',e=>{if(e.key==='/'&&!/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName)){e.preventDefault();q.focus()}});
+
+/* ============================== boot ============================== */
+/* template: the example data is written around one week (exampleAnchor); move every date to the viewer's week */
+function rebaseExample(d){
+  if(!d||!d.exampleAnchor)return d;
+  const k=Math.round((Date.parse(weekRange(CUR_WK)[0]+'T00:00:00Z')-Date.parse(d.exampleAnchor+'T00:00:00Z'))/6048e5);delete d.exampleAnchor;if(!k)return d;
+  const day=s=>new Date(Date.parse(s+'T00:00:00Z')+k*6048e5).toISOString().slice(0,10);
+  const walk=v=>{if(Array.isArray(v))return v.map(walk);
+    if(v&&typeof v==='object'){const o={};for(const [key,x] of Object.entries(v))o[/^\d{4}-W\d{2}$/.test(key)?addWeeks(key,k):key]=walk(x);return o}
+    if(typeof v==='string'){if(/^\d{4}-\d{2}-\d{2}$/.test(v))return day(v);if(/^\d{4}-W\d{2}$/.test(v))return addWeeks(v,k)}
+    return v};
+  return walk(d)}
+async function boot(){
+  const h0=(location.hash||'').slice(1);const h=(h0==='intern'||h0==='visit')?'exp':h0;if(U.tab==='intern'||U.tab==='visit')U.tab='exp';if(U.pickArea&&!SECNAME[U.pickArea])U.pickArea='';if(PANELS[h])U.tab=h;if(!PANELS[U.tab])U.tab='week';U.week='';
+  document.getElementById('today-line').textContent='今天 '+TODAY_ISO.replace(/-/g,'.')+' · '+CUR_WK;
+  applyTheme();
+  const cfg=ls.get(CFG_KEY);const seedEl=document.getElementById('seed');
+  if(cfg&&cfg.token){
+    GH.cfg=cfg;Sync.mode='github';
+    const cache=ls.get(CACHE_KEY);
+    if(cache&&cache.D&&cache.key===cfgKey(cfg)){D=normalize(cache.D);Sync.base=cache.base;Sync.sha=cache.sha;Sync.pending=!!cache.dirty;Sync.status=Sync.pending?'dirty':'ok';reindex();paintSync();render()}
+    else{const host=document.getElementById('panels');host.dataset.ready='';host.innerHTML='<p class="blank">正在从私有仓库读取数据…</p>'}
+    try{const remote=await GH.get();
+      if(remote.missing){if(!D){T.connectStage='missing';renderConnect();return}Sync.sha=null;Sync.base={};Sync.pending=true;Sync.push();return}
+      D=adopt(D&&Sync.pending?merge3(Sync.base,D,remote.data):remote.data);
+      Sync.base=remote.data;Sync.sha=remote.sha;Sync.lastAt=nowHM();Sync.status=Sync.pending?'dirty':'ok';Sync.cache();reindex();paintSync();render();
+      if(Sync.pending)Sync.push();
+    }catch(e){
+      if(D){Sync.status=(e.status===401||e.status===403)?'auth':'offline';Sync.msg=e.message;paintSync()}
+      else{T.connectErr=(e.status===401?'Token 无效或已过期。':'读取失败：'+e.message);renderConnect()}
+    }
+  }else if(seedEl){
+    Sync.mode='preview';D=normalize(ls.get(PREVIEW_KEY)||rebaseExample(JSON.parse(seedEl.textContent)));Sync.status='local';reindex();paintSync();render();
+  }else{renderConnect()}
+}
+boot().then(()=>setTimeout(checkUpdate,1500));
+})();
+</script>
+</body>
+</html>
